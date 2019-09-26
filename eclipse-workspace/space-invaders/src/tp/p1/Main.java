@@ -1,36 +1,22 @@
 package tp.p1;
 
-import java.util.Scanner;
-
-import tp.p1.input.*;
+import tp.p1.game.Controller;
+import tp.p1.game.Game;
+import tp.p1.input.ArgumentParser;
 
 public class Main {
 
 	public static void main(String[] args)
-	{
-		Command[] commands = { 
-				new MoveCommand(),
-				new ShootCommand(), 
-				new SuperpowerCommand(), 
-				new ListCommand(), 
-				new ResetCommand(), 
-				new HelpCommand(), 
-				new ExitCommand(), 
-				new NoneCommand()
-		};
+	{		
+		ArgumentParser parser = new ArgumentParser(args);
 		
-		CommandList commandList = new CommandList(commands);
-		
-		while(true)
-		{
-			Scanner scanner = new Scanner(System.in);
-			String line = scanner.nextLine();
+		if(!parser.tryParse()) { return; }
 			
-			if(!commandList.tryExecuteLine(line))
-			{
-				System.out.println("Error");
-			}
-		}
+		Game game = new Game(parser.getLevel(), parser.getSeed());
+		Controller controller = new Controller(game);
+		controller.run();
+
+		controller.close();		
 	}
 	
 }

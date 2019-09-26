@@ -1,5 +1,7 @@
 package tp.p1.input;
 
+import tp.p1.game.Controller;
+
 /**
  * @author Martín Gómez y Pedro Palacios
  * Help command
@@ -10,7 +12,7 @@ public class HelpCommand extends SingleArgumentCommand {
 	 * Constructs new help command
 	 */
 	public HelpCommand() {
-		super("help");
+		super("help", "Prints this help message.");
 	}
 
 	
@@ -18,8 +20,11 @@ public class HelpCommand extends SingleArgumentCommand {
 	 * Execute help command
 	 */
 	@Override
-	public void execute() {
-		System.out.println("Help command");
+	public void execute(Controller controller) {
+		for(Command c : controller.getCommandList().getCommands())
+		{
+			System.out.println(c.getHelp());
+		}
 	}
 
 }

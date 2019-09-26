@@ -1,5 +1,7 @@
 package tp.p1.input;
 
+import tp.p1.game.Controller;
+
 /**
  * @author Martín Gómez y Pedro Palacios
  * Represents specific Move Command
@@ -10,7 +12,7 @@ public class MoveCommand extends Command {
 	 * Constructs the key and the command of move using the first letter as key
 	 */
 	public MoveCommand() {
-		super("move");
+		super("move", "<left|right><1|2>: Moves UCM-Ship to the indicated direction.");
 	}
 	
 	/**
@@ -27,7 +29,7 @@ public class MoveCommand extends Command {
 	 *	Try executing move command and check data
 	 */
 	@Override
-	public boolean tryExecute(String line) {
+	public boolean tryExecute(String line, Controller controller) {
 		String[] parts = line.toLowerCase().split(" ");
 		
 		//Assert there is a command and two arguments
@@ -57,5 +59,14 @@ public class MoveCommand extends Command {
 	{
 		System.out.println("Move " + direction + " " + number);
 	}
-
+	
+	
+	/**
+	 *	Return move help string
+	 */
+	public String getHelp()
+	{
+		return name + " " + helpString;
+	}
+	
 }

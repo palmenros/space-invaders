@@ -1,5 +1,7 @@
 package tp.p1.input;
 
+import tp.p1.game.Controller;
+
 /**
  * @author Martín Gómez y Pedro Palacios
  * List command
@@ -11,14 +13,14 @@ public class ListCommand extends SingleArgumentCommand {
 	 */
 	public ListCommand()
 	{
-		super("list");
+		super("list", "Prints the list of available ships.");
 	}
 		
 	/**
 	 * Execute list command
 	 */
 	@Override
-	public void execute() {
+	public void execute(Controller controller) {
 		System.out.println("List");
 	}
 
