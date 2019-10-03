@@ -1,6 +1,5 @@
 package tp.p1.input;
 
-import tp.p1.*;
 import tp.p1.game.Controller;
 
 /**

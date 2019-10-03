@@ -16,7 +16,7 @@ public class ArgumentParser {
 	/**
 	 * Random seed
 	 */
-	private int seed = 0;
+	private int seed = (int) System.currentTimeMillis();
 
 	/**
 	 * Game Level

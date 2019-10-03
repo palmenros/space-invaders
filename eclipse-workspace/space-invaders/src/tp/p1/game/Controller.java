@@ -32,18 +32,27 @@ public class Controller {
 	{	
 		shouldExit = false;
 		
+		game.draw();
+		
 		while(!shouldExit)
-		{
+		{	
 			String line = in.nextLine();
 			
 			if(commandList.tryExecuteLine(line, this) && !shouldExit) {
 				
-				//Game logic
+				//TODO: CALL FROM COMMANDS Controller.Tick()
 				
 			} else if(!shouldExit) {
 				System.out.println("Error: Invalid command");
 			}
 		}
+	}
+	
+	public void tick()
+	{
+		game.computerAction();
+		game.update();
+		game.draw();		
 	}
 	
 	public void close()
