@@ -1,9 +1,9 @@
 package tp.p1.input;
 
-import tp.p1.game.Controller;
+import tp.p1.game.*;
 
 /**
- * @author Martín Gómez y Pedro Palacios
+ * @author Martï¿½n Gï¿½mez y Pedro Palacios
  * Represents specific Move Command
  */
 public class MoveCommand extends Command {
@@ -47,7 +47,7 @@ public class MoveCommand extends Command {
 		//Execute the command
 		number = Integer.parseInt(parts[2]);
 		direction = parts[1];	
-		execute();
+		execute(controller);
 		
 		return true;
 	}
@@ -55,9 +55,16 @@ public class MoveCommand extends Command {
 	/**
 	 * Executes move command
 	 */
-	private void execute()
+	private void execute(Controller controller)
 	{
-		System.out.println("Move " + direction + " " + number);
+		UcmShip ship = controller.getGame().getUcmShip();
+		int dc = number * ( direction.equals("right") ? 1 : -1 );
+		
+		if(ship.move(0, dc)) {
+			controller.tick();
+		} else {
+			System.out.println("Invalid move");
+		}
 	}
 	
 	

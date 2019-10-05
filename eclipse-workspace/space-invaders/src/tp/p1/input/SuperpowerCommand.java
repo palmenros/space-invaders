@@ -3,7 +3,7 @@ package tp.p1.input;
 import tp.p1.game.Controller;
 
 /**
- * @author Martín Gómez y Pedro Palacios
+ * @author Martï¿½n Gï¿½mez y Pedro Palacios
  * Superpower command
  */
 public class SuperpowerCommand extends SingleArgumentCommand {
@@ -22,8 +22,12 @@ public class SuperpowerCommand extends SingleArgumentCommand {
 	@Override
 	public void execute(Controller controller) {
 		
-		System.out.println("Superpower");
-	
+		if(controller.getGame().useSuperPower()) {
+			controller.tick();
+		} else {
+			System.out.println("No superpower available");
+		}
+
 	}
 
 }

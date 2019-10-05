@@ -20,4 +20,10 @@ public class UcmShip extends Ship {
 	{
 		return "^__^";
 	}
+	
+	static public String getHelpMessage()
+	{
+		return "^__^: Harm: " + Missile.DEFAULT_HARM + " - Shield: " + HEALTH;
+	}
+	
 }

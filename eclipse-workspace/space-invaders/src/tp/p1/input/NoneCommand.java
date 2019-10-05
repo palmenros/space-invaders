@@ -3,7 +3,7 @@ package tp.p1.input;
 import tp.p1.game.Controller;
 
 /**
- * @author Martín Gómez y Pedro Palacios
+ * @author Martï¿½n Gï¿½mez y Pedro Palacios
  * None command
  */
 public class NoneCommand extends SingleArgumentCommand {
@@ -20,7 +20,7 @@ public class NoneCommand extends SingleArgumentCommand {
 	 */
 	@Override
 	public void execute(Controller controller) {
-		System.out.println("None command");
+		controller.tick();
 	}
 	
 	/**

@@ -3,7 +3,7 @@ package tp.p1.util;
 import tp.p1.game.*;
 
 /**
- * @author Martín Gómez y Pedro Palacios
+ * @author Martï¿½n Gï¿½mez y Pedro Palacios
  * 
  * List of regular ships
  */
@@ -130,4 +130,53 @@ public class RegularShipList
 		return stringBuilder.toString();
 	}
 	
+	/**
+	 * Returns the element at position
+	 * @param row	Row at which the element is
+	 * @param column Column where the element is
+	 * @return The element is found, null otherwise
+	 */
+	public RegularShip getAtPosition(int row, int column)
+	{
+		int index = getIndexAtPosition(row, column);
+		if(index >= 0) {
+			return arr[index];
+		}
+		return null;
+	}
+	
+	/**
+	 * Returns the index of the element at position
+	 * @param row Row at which the element is
+	 * @param column Column where the element is
+	 * @return The index if the element is found, -1 otherwise
+	 */
+	public int getIndexAtPosition(int row, int column)
+	{
+		for(int i = 0; i < num; i++)
+		{
+			if(arr[i].isAt(row, column)) { return i; }
+		} 
+		return -1;
+	}
+	
+	/**
+	 * Damages ship and removes it if dead
+	 * @param i		Index of ship to damage
+	 * @param harm	Harm to inflict
+	 * @return	Negative if alive, number of points if dead
+	 */
+	public int damage(int i, int harm)
+	{
+		if(i < 0 || i >= num) { return -1; }
+		boolean alive = arr[i].damage(harm);
+		
+		if(!alive) {
+			int score = arr[i].getScore();
+			remove(i);
+			return score;
+		}
+		
+		return -1;
+	}
 }

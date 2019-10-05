@@ -1,6 +1,6 @@
 package tp.p1.game;
 
-public class EnemyShip extends Ship {
+abstract public class EnemyShip extends Ship {
 
 	private int score;
 	
@@ -15,4 +15,16 @@ public class EnemyShip extends Ship {
 		return score;
 	}
 	
+	static public String getHelpMessage(String name, int score, int health, int harm)
+	{
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("[");
+		stringBuilder.append(name.substring(0, 1));
+		stringBuilder.append("]");
+		stringBuilder.append(name.substring(1));
+		stringBuilder.append(": Points: " + score + " - Harm: " + harm + " - Shield: " + health);
+		
+		return stringBuilder.toString();
+	}
+
 }

@@ -14,4 +14,9 @@ public class RegularShip extends EnemyShip {
 	{
 		return "C[" + getHealth() + "]";
 	}
+	
+	static public String getHelpMessage()
+	{
+		return EnemyShip.getHelpMessage("Regular ship", SCORE, HEALTH, 0);
+	}
 }

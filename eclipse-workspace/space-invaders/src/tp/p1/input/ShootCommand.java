@@ -3,7 +3,7 @@ package tp.p1.input;
 import tp.p1.game.Controller;
 
 /**
- * @author Martín Gómez y Pedro Palacios
+ * @author Martï¿½n Gï¿½mez y Pedro Palacios
  * Shoot command
  */
 public class ShootCommand extends SingleArgumentCommand {
@@ -21,7 +21,11 @@ public class ShootCommand extends SingleArgumentCommand {
 	 */
 	@Override
 	public void execute(Controller controller) {
-		System.out.println("Shoot");
+		if(controller.getGame().shoot()) {
+			controller.tick();
+		} else {
+			System.out.println("Cannot shoot");
+		}
 	}
 
 }

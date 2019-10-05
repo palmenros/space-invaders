@@ -3,7 +3,7 @@ package tp.p1.input;
 import tp.p1.game.Controller;
 
 /**
- * @author Martín Gómez y Pedro Palacios
+ * @author Martï¿½n Gï¿½mez y Pedro Palacios
  * Reset command
  */
 public class ResetCommand extends SingleArgumentCommand {
@@ -20,7 +20,8 @@ public class ResetCommand extends SingleArgumentCommand {
 	 */
 	@Override
 	public void execute(Controller controller) {
-		System.out.println("Reset");
+		System.out.println("Game Reset!");
+		controller.getGame().reset();
 	}
 
 }

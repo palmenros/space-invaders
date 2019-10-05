@@ -1,9 +1,9 @@
 package tp.p1.input;
 
-import tp.p1.game.Controller;
+import tp.p1.game.*;
 
 /**
- * @author Martín Gómez y Pedro Palacios
+ * @author Martï¿½n Gï¿½mez y Pedro Palacios
  * List command
  */
 public class ListCommand extends SingleArgumentCommand {
@@ -21,7 +21,10 @@ public class ListCommand extends SingleArgumentCommand {
 	 */
 	@Override
 	public void execute(Controller controller) {
-		System.out.println("List");
+		System.out.println(RegularShip.getHelpMessage());
+		System.out.println(DestroyerShip.getHelpMessage());
+		System.out.println(Ovni.getHelpMessage());
+		System.out.println(UcmShip.getHelpMessage());
 	}
 
 }

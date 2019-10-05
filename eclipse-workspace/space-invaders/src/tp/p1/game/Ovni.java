@@ -16,4 +16,9 @@ public class Ovni extends EnemyShip {
 	{
 		return "O[" + getHealth() + "]"; 
 	}
+	
+	static public String getHelpMessage()
+	{
+		return EnemyShip.getHelpMessage("Ovni", SCORE, HEALTH, 0);
+	}
 }

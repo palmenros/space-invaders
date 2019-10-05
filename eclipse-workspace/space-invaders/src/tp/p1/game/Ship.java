@@ -1,6 +1,6 @@
 package tp.p1.game;
 
-public class Ship extends GameObject {
+abstract public class Ship extends GameObject {
 	
 	private int health;
 	
@@ -10,7 +10,7 @@ public class Ship extends GameObject {
 		this.health = health;
 	}
 	
-	boolean damage(int damagePoints)
+	public boolean damage(int damagePoints)
 	{
 		health -= damagePoints;
 		return health > 0;
@@ -20,4 +20,5 @@ public class Ship extends GameObject {
 	{
 		return health;
 	}
+	
 }
