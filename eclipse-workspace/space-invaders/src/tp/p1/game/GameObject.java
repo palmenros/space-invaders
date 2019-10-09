@@ -70,4 +70,14 @@ public class GameObject {
 		
 		return false;
 	}
+	
+	public boolean isAtColumnBorder(Direction direction)
+	{
+		return direction == Direction.LEFT && c == 0 || direction == Direction.RIGHT && c == Game.COL_NUM - 1;
+	}
+	
+	public boolean isAtLowestRow()
+	{
+		return r == Game.ROW_NUM - 1;
+	}
 }

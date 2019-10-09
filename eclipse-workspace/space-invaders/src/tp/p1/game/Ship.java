@@ -12,7 +12,7 @@ abstract public class Ship extends GameObject {
 	
 	public boolean damage(int damagePoints)
 	{
-		health -= damagePoints;
+		health = Math.max(0, health - damagePoints);
 		return health > 0;
 	}
 	

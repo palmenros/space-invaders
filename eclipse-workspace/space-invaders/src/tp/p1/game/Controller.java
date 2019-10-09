@@ -53,6 +53,16 @@ public class Controller {
 		game.computerAction();
 		game.update();
 		game.draw();		
+	
+		GameState state = game.shouldExit();
+		if(state == GameState.ALIEN_WIN) {
+			System.out.println("Aliens win");
+			shouldExit = true;
+		} else if(state == GameState.PLAYER_WIN) {
+			System.out.println("Player win");
+			shouldExit = true;
+		}		
+
 	}
 	
 	public void close()

@@ -7,6 +7,11 @@ public class Ovni extends EnemyShip {
 	private static final int HEALTH = 1;
 	private static final int SCORE = 25;
 	
+	public Ovni()
+	{
+		this(0, Game.COL_NUM);
+	}
+	
 	public Ovni(int r, int c)
 	{
 		super(r, c, HEALTH, SCORE);

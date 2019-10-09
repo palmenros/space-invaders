@@ -81,6 +81,7 @@ public class BombList
 	{
 		if (i>= 0 && i < num)
 		{
+			arr[i].destroy();
 			for (int j = i; j<num-1; j++)
 			{
 				arr[j] = arr[j+1];

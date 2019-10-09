@@ -14,8 +14,11 @@ public class Game {
 	
 	private final Level level;
 	private Random rand;
-	private int cycleCount = 0;
-	private int score = 0;
+	private int cycleCount;
+	private int cyclesSinceLastMove;
+	private int score;
+	
+	private Direction alienDirection;
 	
 	private UcmShip ucmShip;
 	private Ovni ovni;
@@ -38,6 +41,9 @@ public class Game {
 	{
 		score = 0;
 		cycleCount = 0;
+		cyclesSinceLastMove = Integer.MAX_VALUE;
+		
+		alienDirection = Direction.LEFT;
 		
 		ucmShip = new UcmShip();
 		ovni = null;
@@ -73,47 +79,65 @@ public class Game {
 	
 	public void computerAction()
 	{
+		//Shoot bomb
+		for(int i = 0; i < destroyerList.length(); i++) {
+			if(rand.nextFloat() <= level.getFireRate()) {
+				Bomb bomb = destroyerList.get(i).shoot();
+				if(bomb != null) {
+					bombList.insert(bomb);
+				}
+			}	
+		}
 		
+		//Ovni
+		if(ovni == null && rand.nextFloat() <= level.getUfoRate())
+		{
+			ovni = new Ovni();
+		}
 	}
 	
 	public void update()
 	{
 		// Missile
 		if(missile != null) {
+			
+			//Move 
 			if(!missile.move(-1, 0)) {
+				missile = null;
+			} else if(damageEnemy(missile.getRow(), missile.getCol(), missile.getHarm()))
+			{
+				//Collisions	
 				missile = null;
 			}
 		}
 		
-		handleCollisions();
-	}
+		//Bomb
+		int i = 0;
+		while(i < bombList.length()) {
+			Bomb bomb = bombList.get(i);
+		
+			//Move
+			if(!bomb.move(1, 0) || damagePlayer(bomb.getRow(), bomb.getCol(), bomb.getHarm())){
+				bombList.remove(i);
+				i--;
+			}
+			i++;
+		}
+		
+		moveAliens();
 	
-	public void handleCollisions()
-	{
-		//Missile
-		if(missile != null) {
-			int bomb = bombList.getIndexAtPosition(missile.getRow(), missile.getCol());
-			int regular = regularList.getIndexAtPosition(missile.getRow(), missile.getCol());
-			int destructor = destroyerList.getIndexAtPosition(missile.getRow(), missile.getCol());
-			
-			if(bomb >= 0) {
-				bombList.remove(bomb);
-				missile = null;
-			} else if(regular >= 0) {
-				damageRegular(regular, missile.getHarm());
-				missile = null;
-			} else if(destructor >= 0){
-				damageDestroyer(destructor, missile.getHarm());
-				missile = null;
-			} else if(ovni != null && ovni.isAt(missile.getRow(), missile.getCol())){
-				damageOvni(missile.getHarm());
-				missile = null;
+		if(ovni != null)
+		{
+			if(!ovni.move(0, -1)) {
+				ovni = null;
 			}
 		}
-			
+		
+		cycleCount++;
+		cyclesSinceLastMove++;
 	}
-
-	String characterAtToString(int r, int c)
+	
+	public String characterAtToString(int r, int c)
 	{
 		if(ucmShip != null && ucmShip.isAt(r, c)) { return ucmShip.toString(); } 
 		if(ovni != null && ovni.isAt(r, c)) { return ovni.toString(); } 
@@ -200,9 +224,9 @@ public class Game {
 	}
 	
 	/**
-	 * @return True if ovni is still alive, false otherwise
+	 * @return True if UFO is still alive, false otherwise
 	 */	
-	public boolean damageOvni(int harm)
+	private boolean damageOvni(int harm)
 	{
 		if(!ovni.damage(harm))
 		{
@@ -215,7 +239,7 @@ public class Game {
 		}
 	}
 	
-	public boolean damageDestroyer(int index, int harm)
+	private boolean damageDestroyer(int index, int harm) 
 	{
 		int newScore = destroyerList.damage(index, harm);
 		
@@ -227,7 +251,7 @@ public class Game {
 		}
 	}
 	
-	public boolean damageRegular(int index, int harm)
+	private boolean damageRegular(int index, int harm) 
 	{
 		int newScore = regularList.damage(index, harm);
 		
@@ -239,4 +263,121 @@ public class Game {
 		}
 	}
 	
+	private boolean damageEnemy(int r, int c, int harm) 
+	{
+		int bomb = bombList.getIndexAtPosition(r, c);
+		int regular = regularList.getIndexAtPosition(r, c);
+		int destructor = destroyerList.getIndexAtPosition(r, c);
+		
+		if(bomb >= 0) {
+			bombList.remove(bomb);
+			return true;
+		} else if(regular >= 0) {
+			damageRegular(regular, harm);
+			return true;
+		} else if(destructor >= 0){
+			damageDestroyer(destructor, harm);
+			return true;
+		} else if(ovni != null && ovni.isAt(r, c)){
+			damageOvni(harm);
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private boolean damagePlayer(int r, int c, int harm)
+	{
+		//UcmShip
+		if(ucmShip.isAt(r, c)) {
+			ucmShip.damage(harm);
+			return true;
+		}
+		
+		//Missile
+		if(missile != null && missile.isAt(r, c)) {
+			missile = null;
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private boolean moveAliensDown() 
+	{
+		boolean isAlienAtBorder = false;
+		int i = 0;
+		while(!isAlienAtBorder && i < regularList.length())
+		{
+			isAlienAtBorder = regularList.get(i).isAtColumnBorder(alienDirection);
+			i++;
+		}
+		
+		i = 0;
+		while(!isAlienAtBorder && i < destroyerList.length())
+		{
+			isAlienAtBorder = destroyerList.get(i).isAtColumnBorder(alienDirection);
+			i++;
+		}
+		
+		if(isAlienAtBorder)
+		{			
+			for(int j = 0; j < regularList.length(); j++) { regularList.get(j).move(1, 0); }
+			for(int j = 0; j < destroyerList.length(); j++) { destroyerList.get(j).move(1, 0); }
+			
+			alienDirection = alienDirection.getOppositeDirection();
+		}
+		
+		return isAlienAtBorder;
+	}
+	
+	private void moveAliensHorizontally() 
+	{
+		for(int j = 0; j < regularList.length(); j++) { regularList.get(j).move(0, alienDirection.getDeltaCol()); }
+		for(int j = 0; j < destroyerList.length(); j++) { destroyerList.get(j).move(0, alienDirection.getDeltaCol()); }
+	}
+	
+	private void moveAliens() 
+	{
+		if(moveAliensDown()) {
+			cyclesSinceLastMove = 0;
+		} else {
+			if(cyclesSinceLastMove >= level.getSpeed()) {
+				moveAliensHorizontally();
+				cyclesSinceLastMove = 0;
+			}
+		}
+	}
+	
+	public GameState shouldExit() 
+	{
+		int remainingAliens = destroyerList.length() + regularList.length() + ( ovni == null ? 0 : 1 );
+		if(remainingAliens == 0) {
+			return GameState.PLAYER_WIN;
+		}
+				
+		if(ucmShip.getHealth() == 0) {
+			return GameState.ALIEN_WIN;
+		}
+		
+		boolean isAnyAlienLastRow = false;
+		
+		int i = 0;	
+		while(!isAnyAlienLastRow && i < regularList.length()){
+			isAnyAlienLastRow = regularList.get(i).isAtLowestRow();
+			i++;
+		}
+		
+		i = 0;	
+		while(!isAnyAlienLastRow && i < destroyerList.length()){
+			isAnyAlienLastRow = destroyerList.get(i).isAtLowestRow();
+			i++;
+		}
+		
+		if(isAnyAlienLastRow) {
+			return GameState.ALIEN_WIN;
+		}
+		
+		return GameState.IN_PROGRESS;
+	}
 }
