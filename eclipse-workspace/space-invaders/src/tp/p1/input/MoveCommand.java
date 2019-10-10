@@ -3,8 +3,8 @@ package tp.p1.input;
 import tp.p1.game.*;
 
 /**
- * @author Mart�n G�mez y Pedro Palacios
  * Represents specific Move Command
+ * @author Martín Gómez y Pedro Palacios
  */
 public class MoveCommand extends Command {
 
@@ -54,6 +54,7 @@ public class MoveCommand extends Command {
 	
 	/**
 	 * Executes move command
+	 * @param controller Controller
 	 */
 	private void execute(Controller controller)
 	{

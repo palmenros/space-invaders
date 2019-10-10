@@ -1,8 +1,8 @@
 package tp.p1.game;
 
 /**
- * @author Martín Gómez y Pedro Palacios
- * Represents level of the game
+ * Enum that represents the level of the game
+ * @author MartÃ­n GÃ³mez y Pedro Palacios
  */
 public enum Level {
 	

@@ -1,9 +1,8 @@
 package tp.p1.util;
 
 /**
- * @author Martín Gómez y Pedro Palacios
- *
  * Helper class for string manipulation
+ * @author MartÃ­n GÃ³mez y Pedro Palacios
  */
 public class MyStringUtils {
 

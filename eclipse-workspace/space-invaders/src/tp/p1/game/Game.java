@@ -4,9 +4,8 @@ import java.util.Random;
 import tp.p1.util.*;
 
 /**
- * @author Martín Gómez y Pedro Palacios
- *
  * Class that represents a game
+ * @author MartÃ­n GÃ³mez y Pedro Palacios
  */
 public class Game {
 
@@ -383,6 +382,7 @@ public class Game {
 	
 	/**
 	 * Damage Ovni
+	 * @param harm Harm caused to the UFO
 	 * @return True if UFO is still alive, false otherwise
 	 */	
 	private boolean damageOvni(int harm)
@@ -400,6 +400,8 @@ public class Game {
 	
 	/**
 	 * Damage destroyer
+	 * @param index Index of destroyer to damage
+	 * @param harm Harm to cause
 	 * @return True if still alive, false otherwise
 	 */	
 	private boolean damageDestroyer(int index, int harm) 
@@ -416,6 +418,8 @@ public class Game {
 	
 	/**
 	 * Damage regular ship
+	 * @param index Index of destroyer to damage
+	 * @param harm Harm to cause
 	 * @return True if still alive, false otherwise
 	 */	
 	private boolean damageRegular(int index, int harm) 
@@ -431,7 +435,10 @@ public class Game {
 	}
 	
 	/**
-	 * Damage enemy
+	 * Damage enemy at location
+	 * @param r Row
+	 * @param c Column
+	 * @param harm Harm to cause
 	 * @return True if hit anything, false otherwise
 	 */	
 	private boolean damageEnemy(int r, int c, int harm) 
@@ -458,7 +465,10 @@ public class Game {
 	}
 	
 	/**
-	 * Damage player
+	 * Damage player-affine objects
+	 * @param r Row
+	 * @param c Column
+	 * @param harm Harm to cause
 	 * @return True if hit player or missile, false otherwise
 	 */	
 	private boolean damagePlayer(int r, int c, int harm)

@@ -4,8 +4,8 @@ import java.util.Scanner;
 import tp.p1.game.*;
 
 /**
- * @author Martín Gómez y Pedro Palacios
  * Main executable class
+ * @author MartÃ­n GÃ³mez y Pedro Palacios
  */
 public class Main {
 

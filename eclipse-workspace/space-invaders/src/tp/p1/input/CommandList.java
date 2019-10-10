@@ -3,8 +3,8 @@ package tp.p1.input;
 import tp.p1.game.Controller;
 
 /**
- * @author Martín Gómez y Pedro Palacios
  * Represents a command list that can be executed
+ * @author MartÃ­n GÃ³mez y Pedro Palacios
  */
 public class CommandList {
 
@@ -24,6 +24,7 @@ public class CommandList {
 	
 	/**
 	 * @param commandLine Line to try to execute
+	 * @param controller Controller
 	 * @return Returns true if command could be parsed and executed, false otherwise
 	 */
 	public boolean tryExecuteLine(String commandLine, Controller controller)

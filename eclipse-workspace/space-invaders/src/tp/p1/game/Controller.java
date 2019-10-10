@@ -6,9 +6,8 @@ import tp.p1.input.*;
 
 
 /**
- * @author Martín Gómez y Pedro Palacios
- *
  * Class that represents the controller, the interaction between the game and player
+ * @author MartÃ­n GÃ³mez y Pedro Palacios
  */
 public class Controller {
 	

@@ -1,9 +1,8 @@
 package tp.p1.game;
 
 /**
- * @author Martín Gómez y Pedro Palacios
- * 
  * Abstract class that represents an enemy ship
+ * @author MartÃ­n GÃ³mez y Pedro Palacios
  */
 abstract public class EnemyShip extends Ship {
 
@@ -40,7 +39,7 @@ abstract public class EnemyShip extends Ship {
 	 * @param score Score given to the user
 	 * @param health Health
 	 * @param harm Harm that the ship inflicts
-	 * @return
+	 * @return String with constructed summary
 	 */
 	static protected String constructHelpMessage(String name, int score, int health, int harm)
 	{

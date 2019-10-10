@@ -1,9 +1,8 @@
 package tp.p1.game;
 
 /**
- * @author Martín Gómez y Pedro Palacios
- *
  * Abstract class that represents a game object on the board
+ * @author MartÃ­n GÃ³mez y Pedro Palacios
  */
 public abstract class GameObject {
 

@@ -1,9 +1,8 @@
 package tp.p1.game;
 
 /**
- * @author Martín Gómez y Pedro Palacios
- * 
  * Destroyer ship
+ * @author MartÃ­n GÃ³mez y Pedro Palacios 
  */
 public class DestroyerShip extends EnemyShip {
 

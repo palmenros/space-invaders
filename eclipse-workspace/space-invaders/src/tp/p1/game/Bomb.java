@@ -1,8 +1,8 @@
 package tp.p1.game;
 
 /**
- * @author Martín Gómez y Pedro Palacios
  * Bomb
+ * @author MartÃ­n GÃ³mez y Pedro Palacios
  */
 public class Bomb extends GameObject {
 	

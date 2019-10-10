@@ -2,7 +2,7 @@ package tp.p1.game;
 
 /**
  * SuperPower
- * @author Mart�n G�mez y Pedro Palacios
+ * @author Martín Gómez y Pedro Palacios
  */
 public class SuperPower {
 

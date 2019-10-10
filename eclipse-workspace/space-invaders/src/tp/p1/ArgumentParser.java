@@ -3,8 +3,8 @@ package tp.p1;
 import tp.p1.game.Level;
 
 /**
- * @author Martín Gómez y Pedro Palacios
  * Class that parses arguments
+ * @author MartÃ­n GÃ³mez y Pedro Palacios
  */
 public class ArgumentParser {
 

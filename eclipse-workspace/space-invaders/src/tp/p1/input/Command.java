@@ -3,8 +3,8 @@ package tp.p1.input;
 import tp.p1.game.Controller;
 
 /**
- * @author Martín Gómez y Pedro Palacios
  * Represents an executable command by the game
+ * @author MartÃ­n GÃ³mez y Pedro Palacios
  */
 public abstract class Command {
 		
@@ -57,7 +57,7 @@ public abstract class Command {
 	/**
 	 * Try executing this command with the given line
 	 * @param line	Command line to try to parse
-	 * @param controller TODO
+	 * @param controller Controller
 	 * @return	Returns true if succeeded, false otherwise
 	 */
 	public abstract boolean tryExecute(String line, Controller controller);

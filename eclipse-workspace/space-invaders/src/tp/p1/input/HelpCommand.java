@@ -3,8 +3,8 @@ package tp.p1.input;
 import tp.p1.game.Controller;
 
 /**
- * @author Martín Gómez y Pedro Palacios
  * Help command
+ * @author MartÃ­n GÃ³mez y Pedro Palacios
  */
 public class HelpCommand extends SingleArgumentCommand {
 

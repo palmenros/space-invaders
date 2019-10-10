@@ -3,8 +3,8 @@ package tp.p1.input;
 import tp.p1.game.Controller;
 
 /**
- * @author Martín Gómez y Pedro Palacios
- *
+ * Single Argument Command
+ * @author MartÃ­n GÃ³mez y Pedro Palacios
  */
 public abstract class SingleArgumentCommand extends Command {
 
@@ -56,7 +56,7 @@ public abstract class SingleArgumentCommand extends Command {
 	
 	/**
 	 *	Execute the specific command
-	 * @param controller TODO
+	 * @param controller Controller
 	 */
 	public abstract void execute(Controller controller);
 

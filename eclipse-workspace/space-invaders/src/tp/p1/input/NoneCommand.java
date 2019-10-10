@@ -3,8 +3,8 @@ package tp.p1.input;
 import tp.p1.game.Controller;
 
 /**
- * @author Mart�n G�mez y Pedro Palacios
  * None command
+ * @author Martín Gómez y Pedro Palacios
  */
 public class NoneCommand extends SingleArgumentCommand {
 

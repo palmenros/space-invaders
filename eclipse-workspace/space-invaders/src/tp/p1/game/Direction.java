@@ -1,9 +1,8 @@
 package tp.p1.game;
 
 /**
- * @author Martín Gómez y Pedro Palacios
- *
  * Enum that represents a direction: left or right
+ * @author MartÃ­n GÃ³mez y Pedro Palacios
  */
 public enum Direction {
 	LEFT(-1),
@@ -18,7 +17,7 @@ public enum Direction {
 	 * Create a Direction
 	 * @param deltaCol Delta column
 	 */
-	Direction(int deltaCol)
+	private Direction(int deltaCol)
 	{
 		this.deltaCol = deltaCol;
 	}	

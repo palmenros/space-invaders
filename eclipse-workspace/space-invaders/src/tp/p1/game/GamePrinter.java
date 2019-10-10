@@ -2,20 +2,48 @@ package tp.p1.game;
 
 import tp.p1.util.MyStringUtils;
 
+/**
+ * Class that prints the game to string
+ * @author Martín Gómez y Pedro Palacios
+ */
 public class GamePrinter {
 	
+	/**
+	 *  Number of rows of the board
+	 */
 	int numRows; 
+	
+	/**
+	 *  Number of columns of the board
+	 */
 	int numCols;
+	
+	/**
+	 *  String representing the board
+	 */
 	String[][] board;
+		
+	/**
+	 * String that represents a space
+	 */
 	final String space = " ";
 	
-	
+	/**
+	 * Construct a new game printer from given game
+	 * @param game Game
+	 * @param rows Number of rows
+	 * @param cols Number of columns
+	 */
 	public GamePrinter (Game game, int rows, int cols) {
 		this.numRows = rows;
 		this.numCols = cols;		
 		encodeGame(game);
 	}
 	
+	/**
+	 * Encode current game board into string
+	 * @param game Game
+	 */
 	private void encodeGame(Game game) {
 		board = new String[numRows][numCols];
 		for(int i = 0; i < numRows; i++) {
@@ -25,6 +53,9 @@ public class GamePrinter {
 		}
 	}
 	
+	/**
+	 * Return game representation as a string
+	 */
 	public String toString() {
 
 		int cellSize = 7;

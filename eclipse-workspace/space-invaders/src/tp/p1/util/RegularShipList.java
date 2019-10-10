@@ -3,9 +3,8 @@ package tp.p1.util;
 import tp.p1.game.*;
 
 /**
- * @author Mart�n G�mez y Pedro Palacios
- * 
  * List of regular ships
+ * @author Martín Gómez y Pedro Palacios
  */
 public class RegularShipList
 {

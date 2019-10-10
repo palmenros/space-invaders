@@ -3,9 +3,8 @@ package tp.p1.util;
 import tp.p1.game.*;
 
 /**
- * @author Martín Gómez y Pedro Palacios
- * 
  * List of destroyer ships
+ * @author MartÃ­n GÃ³mez y Pedro Palacios
  */
 public class DestroyerShipList
 {
