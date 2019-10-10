@@ -17,6 +17,11 @@ public class RegularShip extends EnemyShip {
 	
 	static public String getHelpMessage()
 	{
-		return EnemyShip.getHelpMessage("Regular ship", SCORE, HEALTH, 0);
+		return EnemyShip.constructHelpMessage("Regular ship", SCORE, HEALTH, 0);
 	}
+	public boolean update()
+	{
+		return true;
+	}
+	
 }

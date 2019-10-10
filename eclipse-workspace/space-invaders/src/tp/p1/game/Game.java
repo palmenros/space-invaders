@@ -3,32 +3,111 @@ package tp.p1.game;
 import java.util.Random;
 import tp.p1.util.*;
 
+/**
+ * @author Martín Gómez y Pedro Palacios
+ *
+ * Class that represents a game
+ */
 public class Game {
 
+	/**
+	 * Number of rows in board
+	 */
 	public static final int ROW_NUM = 8;
+	
+	/**
+	 * Number of columns in board 
+	 */
 	public static final int COL_NUM = 9;
 	
+	/**
+	 * Initial regular aliens per row
+	 */
 	private static final int INITIAL_COMMON_ALIENS_PER_ROW = 4;
+	
+	/**
+	 * Row where regular aliens are initially spawned 
+	 */
 	private static final int INITIAL_COMMON_ALIENS_ROW = 1;
+	
+	/**
+	 * Column where regular aliens are initially spawned 
+	 */
 	private static final int INITIAL_COMMON_ALIENS_COLUMN = 3;	
 	
+	
+	/**
+	 * Chosen level by the user
+	 */
 	private final Level level;
+	
+	/**
+	 * Random Number Generator
+	 */
 	private Random rand;
+	
+	/**
+	 * Number of cycles since start of the game
+	 */
 	private int cycleCount;
+	
+	/**
+	 * Number of cycles since last joined alien move
+	 */
 	private int cyclesSinceLastMove;
+		
+	/**
+	 *	User score 
+	 */
 	private int score;
 	
+	
+	/**
+	 *  Direction where the aliens are moving
+	 */
 	private Direction alienDirection;
 	
+	/**
+	 * Player's ship
+	 */
 	private UcmShip ucmShip;
+	
+	/**
+	 * UFO
+	 */
 	private Ovni ovni;
+	
+	/**
+	 * Missile
+	 */
 	private Missile missile;
+	
+	/**
+	 * SuperPower
+	 */
 	private SuperPower superPower;
 	
+	/**
+	 * List of bombs
+	 */
 	private BombList bombList;
+	
+	/**
+	 * List of destroyers
+	 */
 	private DestroyerShipList destroyerList;
+	
+	/**
+	 * List of regular lists
+	 */
 	private RegularShipList regularList;
 	
+	
+	/**
+	 * Create new game with given level and seed
+	 * @param level	Level
+	 * @param seed Random seed
+	 */
 	public Game(Level level, int seed)
 	{
 		this.level = level;
@@ -37,8 +116,12 @@ public class Game {
 		initGame();
 	}
 	
+	/**
+	 * Initialize game
+	 */
 	public void initGame()
 	{
+		//Initialize variables
 		score = 0;
 		cycleCount = 0;
 		cyclesSinceLastMove = Integer.MAX_VALUE;
@@ -72,14 +155,33 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * Draw the game on screen
+	 */
 	public void draw()
 	{
 		System.out.print(this.toString());
 	}
 	
-	public void computerAction()
+	/**
+	 * Do another game cycle
+	 * @return Game state that indicates if game has finished
+	 */
+	public GameState tick()
 	{
-		//Shoot bomb
+		computerAction();
+		update();
+		draw();		
+	
+		return getGameState();
+	}
+	
+	/**
+	 * Calculate what the AI will do
+	 */
+	private void computerAction()
+	{
+		//Destroyers
 		for(int i = 0; i < destroyerList.length(); i++) {
 			if(rand.nextFloat() <= level.getFireRate()) {
 				Bomb bomb = destroyerList.get(i).shoot();
@@ -96,47 +198,85 @@ public class Game {
 		}
 	}
 	
-	public void update()
+	/**
+	 * Update game objects
+	 */
+	private void update()
 	{
-		// Missile
-		if(missile != null) {
-			
-			//Move 
-			if(!missile.move(-1, 0)) {
-				missile = null;
-			} else if(damageEnemy(missile.getRow(), missile.getCol(), missile.getHarm()))
-			{
-				//Collisions	
-				missile = null;
-			}
+		// Update missile
+		if(missile != null && !missile.update()) {
+			missile = null;
 		}
 		
+		//Handle missile collision with bombs to detect possible intersections
+		handleMissileCollisions();
+			
 		//Bomb
 		int i = 0;
 		while(i < bombList.length()) {
 			Bomb bomb = bombList.get(i);
 		
 			//Move
-			if(!bomb.move(1, 0) || damagePlayer(bomb.getRow(), bomb.getCol(), bomb.getHarm())){
+			if(!bomb.update()){
 				bombList.remove(i);
 				i--;
 			}
 			i++;
 		}
 		
+		//Update aliens
 		moveAliens();
 	
-		if(ovni != null)
-		{
-			if(!ovni.move(0, -1)) {
-				ovni = null;
-			}
+		//Update ovni
+		if(ovni != null && !ovni.update()){
+			ovni = null;
 		}
 		
+		//Handle collisions
+		handleCollisions();
+		
+		//Increase cycles
 		cycleCount++;
 		cyclesSinceLastMove++;
 	}
 	
+	/**
+	 * Handle missile collisions
+	 */
+	private void handleMissileCollisions()
+	{ 
+		if(missile != null && damageEnemy(missile.getRow(), missile.getCol(), missile.getHarm())) {
+			missile = null;
+		}
+	}
+	
+	/**
+	 * Handle collisions of missiles and bombs
+	 */
+	private void handleCollisions()
+	{
+		handleMissileCollisions();
+		
+		int i = 0;
+		while(i < bombList.length()) {
+			Bomb bomb = bombList.get(i);
+		
+			//Collide
+			if(damagePlayer(bomb.getRow(), bomb.getCol(), bomb.getHarm())){
+				bombList.remove(i);
+				i--;
+			}
+			i++;
+		}
+		
+	}
+			
+	/**
+	 * Return string of object at position
+	 * @param r	Row
+	 * @param c	Column
+	 * @return String representation of object
+	 */
 	public String characterAtToString(int r, int c)
 	{
 		if(ucmShip != null && ucmShip.isAt(r, c)) { return ucmShip.toString(); } 
@@ -155,6 +295,9 @@ public class Game {
 		return "";
 	}
 	
+	/**
+	 *	Return string representation of this game
+	 */
 	public String toString()
 	{
 		GamePrinter gamePrinter = new GamePrinter(this, ROW_NUM, COL_NUM);
@@ -173,17 +316,28 @@ public class Game {
 		return stringBuilder.toString();
 	}
 	
+	/**
+	 * Reset game
+	 */
 	public void reset()
 	{
 		initGame();
 		draw();
 	}
 	
+	/**
+	 * Return UCM Ship
+	 * @return UCM ship
+	 */
 	public UcmShip getUcmShip()
 	{
 		return ucmShip;
 	}
 
+	/**
+	 * Try to use SuperPower
+	 * @return true if could use, false otherwise
+	 */
 	public boolean useSuperPower()
 	{
 		if(superPower == null) { return false; }
@@ -214,6 +368,10 @@ public class Game {
 		return true;
 	}
 	
+	/**
+	 * Shoot a missile
+	 * @return true if succeeded, false oterwise
+	 */
 	public boolean shoot()
 	{
 		if(missile != null) { return false; }
@@ -224,6 +382,7 @@ public class Game {
 	}
 	
 	/**
+	 * Damage Ovni
 	 * @return True if UFO is still alive, false otherwise
 	 */	
 	private boolean damageOvni(int harm)
@@ -239,6 +398,10 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * Damage destroyer
+	 * @return True if still alive, false otherwise
+	 */	
 	private boolean damageDestroyer(int index, int harm) 
 	{
 		int newScore = destroyerList.damage(index, harm);
@@ -251,6 +414,10 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * Damage regular ship
+	 * @return True if still alive, false otherwise
+	 */	
 	private boolean damageRegular(int index, int harm) 
 	{
 		int newScore = regularList.damage(index, harm);
@@ -263,6 +430,10 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * Damage enemy
+	 * @return True if hit anything, false otherwise
+	 */	
 	private boolean damageEnemy(int r, int c, int harm) 
 	{
 		int bomb = bombList.getIndexAtPosition(r, c);
@@ -286,6 +457,10 @@ public class Game {
 		return false;
 	}
 	
+	/**
+	 * Damage player
+	 * @return True if hit player or missile, false otherwise
+	 */	
 	private boolean damagePlayer(int r, int c, int harm)
 	{
 		//UcmShip
@@ -303,6 +478,11 @@ public class Game {
 		return false;
 	}
 	
+	
+	/**
+	 * Move aliens down if touching border
+	 * @return True if moved aliens down
+	 */
 	private boolean moveAliensDown() 
 	{
 		boolean isAlienAtBorder = false;
@@ -331,12 +511,18 @@ public class Game {
 		return isAlienAtBorder;
 	}
 	
+	/**
+	 * Move aliens horizontally according to direction
+	 */
 	private void moveAliensHorizontally() 
 	{
 		for(int j = 0; j < regularList.length(); j++) { regularList.get(j).move(0, alienDirection.getDeltaCol()); }
 		for(int j = 0; j < destroyerList.length(); j++) { destroyerList.get(j).move(0, alienDirection.getDeltaCol()); }
 	}
-	
+
+	/**
+	 * Move aliens
+	 */
 	private void moveAliens() 
 	{
 		if(moveAliensDown()) {
@@ -349,7 +535,11 @@ public class Game {
 		}
 	}
 	
-	public GameState shouldExit() 
+	/**
+	 * Get Game State
+	 * @return game state
+	 */
+	private GameState getGameState() 
 	{
 		int remainingAliens = destroyerList.length() + regularList.length() + ( ovni == null ? 0 : 1 );
 		if(remainingAliens == 0) {

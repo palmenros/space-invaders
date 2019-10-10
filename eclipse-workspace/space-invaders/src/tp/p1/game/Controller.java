@@ -4,18 +4,46 @@ import java.util.Scanner;
 
 import tp.p1.input.*;
 
+
+/**
+ * @author Martín Gómez y Pedro Palacios
+ *
+ * Class that represents the controller, the interaction between the game and player
+ */
 public class Controller {
 	
+	/**
+	 * Game which the player is playing
+	 */
 	private Game game;
+	
+	/**
+	 *	Scanner from which the user inputs data 
+	 */
 	private Scanner in;
+	
+	/**
+	 * List of commands that the player can execute
+	 */
 	private CommandList commandList;
+	
+	/**
+	 * Flag that indicates if the program should exit
+	 */
 	private boolean shouldExit;
 	
-	public Controller(Game game)
+	
+	/**
+	 * Given a game, create a controller to play it
+	 * @param game Game to play
+	 * @param scanner Scanner where to read from
+	 */
+	public Controller(Game game, Scanner scanner)
 	{
 		this.game = game;
-		in = new Scanner(System.in);
+		in = scanner;
 		
+		//Commands that the user can execute
 		commandList = new CommandList(new Command[]{ 
 				new MoveCommand(),
 				new ShootCommand(), 
@@ -28,6 +56,9 @@ public class Controller {
 		});
 	}
 	
+	/**
+	 * Execute the game
+	 */
 	public void run()
 	{	
 		shouldExit = false;
@@ -38,23 +69,19 @@ public class Controller {
 		{	
 			String line = in.nextLine();
 			
-			if(commandList.tryExecuteLine(line, this) && !shouldExit) {
-				
-				//TODO: CALL FROM COMMANDS Controller.Tick()
-				
-			} else if(!shouldExit) {
-				System.out.println("Error: Invalid command");
+			if(!commandList.tryExecuteLine(line, this) && !shouldExit) {
+				System.out.println("Error: Invalid command");				
 			}
 		}
 	}
 	
+	/**
+	 * Function called by commands if successfully executed that tells the game to run another cycle and determines if should exit
+	 */
 	public void tick()
 	{
-		game.computerAction();
-		game.update();
-		game.draw();		
+		GameState state = game.tick();
 	
-		GameState state = game.shouldExit();
 		if(state == GameState.ALIEN_WIN) {
 			System.out.println("Aliens win");
 			shouldExit = true;
@@ -65,21 +92,35 @@ public class Controller {
 
 	}
 	
+	/**
+	 * Close all resources 
+	 */
 	public void close()
 	{
 		in.close();
 	}
 	
+	/**
+	 * Get command list
+	 * @return Command list
+	 */
 	public CommandList getCommandList()
 	{
 		return commandList;
 	}
 	
+	/**
+	 * Get current game instance
+	 * @return Game
+	 */
 	public Game getGame()
 	{
 		return game;
 	}
-	
+		
+	/**
+	 * Exit the current game 
+	 */
 	public void exit()
 	{
 		shouldExit = true;

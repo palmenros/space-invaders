@@ -1,4 +1,4 @@
-package tp.p1.input;
+package tp.p1;
 
 import tp.p1.game.Level;
 
@@ -73,7 +73,8 @@ public class ArgumentParser {
 	 * If correctly parsed, this method will return the argument value, otherwise it will return the default value
 	 * @return seed
 	 */
-	public int getSeed() {
+	public int getSeed()
+	{
 		return seed;
 	}
 
@@ -81,7 +82,8 @@ public class ArgumentParser {
 	 * If correctly parsed, this method will return the argument value, otherwise it will return the default value
 	 * @return level
 	 */
-	public Level getLevel() {
+	public Level getLevel()
+	{
 		return level;
 	}
 		

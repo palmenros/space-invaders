@@ -26,4 +26,8 @@ public class Missile extends GameObject {
 	{
 		return harm;
 	}
+	public boolean update()
+	{
+		return move(-1,0);
+	}
 }

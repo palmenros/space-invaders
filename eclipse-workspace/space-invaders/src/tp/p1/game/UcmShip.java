@@ -25,5 +25,8 @@ public class UcmShip extends Ship {
 	{
 		return "^__^: Harm: " + Missile.DEFAULT_HARM + " - Shield: " + HEALTH;
 	}
-	
+	public boolean update()
+	{
+		return true;
+	}
 }
