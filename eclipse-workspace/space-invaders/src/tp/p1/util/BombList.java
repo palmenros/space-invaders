@@ -76,7 +76,7 @@ public class BombList
 	 * Removes element at index from list
 	 * @param i Index to be removed
 	 */
-	public void remove(int i)
+	private void remove(int i)
 	{
 		if (i>= 0 && i < num)
 		{
@@ -95,7 +95,7 @@ public class BombList
 	 * @param i Index
 	 * @return Bomb at index i or null if out of bounds
 	 */
-	public Bomb get(int i)
+	private Bomb get(int i)
 	{
 		if (i>=0 && i<num)
 		{
@@ -151,7 +151,7 @@ public class BombList
 	 * @param column Column where the element is
 	 * @return The index if the element is found, -1 otherwise
 	 */
-	public int getIndexAtPosition(int row, int column)
+	private int getIndexAtPosition(int row, int column)
 	{
 		for(int i = 0; i < num; i++)
 		{
@@ -160,4 +160,58 @@ public class BombList
 		return -1;
 	}
 
+	/**
+	 * Update list of bombs
+	 */
+	public void update()
+	{
+		int i = 0;
+		while(i < length()) {
+			Bomb bomb = get(i);
+		
+			//Call update on bombs
+			if(!bomb.update()){
+				remove(i);
+				i--;
+			}
+			i++;
+		}
+	}
+	
+	/**
+	 * Damage bomb at position
+	 * 
+	 * @param r Row
+	 * @param c Column
+	 * @return true if hit bomb, false otherwise
+	 */
+	public boolean damageBombAtPosition(int r, int c)
+	{
+		int bomb = getIndexAtPosition(r, c);
+		
+		if(bomb >= 0) {
+			remove(bomb);
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Remove all bombs when callback called is true
+	 * @param callback Callback to call for every bomb to determine if is removed
+	 */
+	public void removeIf(BombCallback callback)
+	{
+		int i = 0;
+		while(i < length()) {
+			Bomb bomb = get(i);
+		
+			if(callback.shouldRemove(bomb)){
+				remove(i);
+				i--;
+			}
+			i++;
+		}
+	}
 }

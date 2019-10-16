@@ -1,5 +1,7 @@
 package tp.p1.util;
 
+import java.util.Random;
+
 import tp.p1.game.*;
 
 /**
@@ -76,7 +78,7 @@ public class DestroyerShipList
 	 * Removes element at index from list
 	 * @param i Index to be removed
 	 */
-	public void remove(int i)
+	private void remove(int i)
 	{
 		if (i>= 0 && i < num)
 		{
@@ -94,7 +96,7 @@ public class DestroyerShipList
 	 * @param i Index
 	 * @return Ship at index i or null if out of bounds
 	 */
-	public DestroyerShip get(int i)
+	private DestroyerShip get(int i)
 	{
 		if (i>=0 && i<num)
 		{
@@ -150,7 +152,7 @@ public class DestroyerShipList
 	 * @param column Column where the element is
 	 * @return The index if the element is found, -1 otherwise
 	 */
-	public int getIndexAtPosition(int row, int column)
+	private int getIndexAtPosition(int row, int column)
 	{
 		for(int i = 0; i < num; i++)
 		{
@@ -165,7 +167,7 @@ public class DestroyerShipList
 	 * @param harm	Harm to inflict
 	 * @return	Negative if alive, number of points if dead
 	 */
-	public int damage(int i, int harm)
+	private int damage(int i, int harm)
 	{
 		if(i < 0 || i >= num) { return -1; }
 		boolean alive = arr[i].damage(harm);
@@ -178,4 +180,113 @@ public class DestroyerShipList
 		
 		return -1;
 	}
+	
+	
+	/**
+	 * Execute computer action for destroyer ships
+	 * 
+	 * @param rand Random variable
+	 * @param level Level which is being currently played
+	 * @param bombList BombList where to shoot
+	 */
+	public void computerAction(Random rand, Level level, BombList bombList)
+	{
+		for(int i = 0; i < length(); i++) {
+			if(rand.nextFloat() <= level.getFireRate()) {
+				Bomb bomb = get(i).shoot();
+				if(bomb != null) {
+					bombList.insert(bomb);
+				}
+			}	
+		}
+	}
+	
+	/**
+	 * Is any alien at column border?
+	 * @param alienDirection Direction
+	 * @return True if any alien is at column border
+	 */
+	public boolean isAnyAtColumnBorder(Direction alienDirection)
+	{
+		boolean isAlienAtBorder = false;
+		int i = 0;
+		while(!isAlienAtBorder && i < length())
+		{
+			isAlienAtBorder = get(i).isAtColumnBorder(alienDirection);
+			i++;
+		}
+		return isAlienAtBorder;
+	}
+	
+	/**
+	 * Moves all aliens
+	 * 
+	 * @param dr Delta row
+	 * @param dc Delta column
+	 */
+	public void moveAll(int dr, int dc)
+	{
+		for(int i = 0; i < length(); i++) {
+			get(i).move(dr, dc);
+		}
+	}
+	
+	/**
+	 * Is any alien at lowest row?
+	 * @return True if any alien is at lowest row
+	 */
+	public boolean isAnyAtLowestRow()
+	{
+		boolean isAnyAlienLastRow = false;
+		int i = 0;	
+		while(!isAnyAlienLastRow && i < length()){
+			isAnyAlienLastRow = get(i).isAtLowestRow();
+			i++;
+		}
+		
+		return isAnyAlienLastRow;
+	}
+	
+	/**
+	 * Damage alien at position
+	 * @param r Row
+	 * @param c Column
+	 * @param harm Harm
+	 * @return -2 if no alien was hurt, -1 if hurt but not killed, score if killed
+	 */
+	public int damageAtPosition(int r, int c, int harm)
+	{
+		int i = getIndexAtPosition(r, c);
+		if(i >= 0) {
+			return damage(i, harm);
+		} else {
+			return -2;
+		}
+	}
+	
+	/**
+	 * Damage all aliens
+	 * @param harm Harm
+	 * @return Accumulated score of kills
+	 */
+	public int damageAll(int harm)
+	{
+		int scoreTotal = 0;
+
+		int i = 0;
+		while(i < length())	
+		{
+			int score = damage(i, harm);
+
+			if(score > 0) {
+				scoreTotal += score;
+		 	}else{
+				i++;
+			}
+		}
+		
+		return scoreTotal;
+	}
+	
+	
 }

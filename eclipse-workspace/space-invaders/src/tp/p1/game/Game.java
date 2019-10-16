@@ -181,14 +181,7 @@ public class Game {
 	private void computerAction()
 	{
 		//Destroyers
-		for(int i = 0; i < destroyerList.length(); i++) {
-			if(rand.nextFloat() <= level.getFireRate()) {
-				Bomb bomb = destroyerList.get(i).shoot();
-				if(bomb != null) {
-					bombList.insert(bomb);
-				}
-			}	
-		}
+		destroyerList.computerAction(rand, level, bombList);
 		
 		//Ovni
 		if(ovni == null && rand.nextFloat() <= level.getUfoRate())
@@ -211,17 +204,7 @@ public class Game {
 		handleMissileCollisions();
 			
 		//Bomb
-		int i = 0;
-		while(i < bombList.length()) {
-			Bomb bomb = bombList.get(i);
-		
-			//Move
-			if(!bomb.update()){
-				bombList.remove(i);
-				i--;
-			}
-			i++;
-		}
+		bombList.update();
 		
 		//Update aliens
 		moveAliens();
@@ -255,19 +238,12 @@ public class Game {
 	private void handleCollisions()
 	{
 		handleMissileCollisions();
-		
-		int i = 0;
-		while(i < bombList.length()) {
-			Bomb bomb = bombList.get(i);
-		
-			//Collide
-			if(damagePlayer(bomb.getRow(), bomb.getCol(), bomb.getHarm())){
-				bombList.remove(i);
-				i--;
+				
+		bombList.removeIf(new BombCallback() {
+			public boolean shouldRemove(Bomb bomb) {
+				return damagePlayer(bomb.getRow(), bomb.getCol(), bomb.getHarm());
 			}
-			i++;
-		}
-		
+		});
 	}
 			
 	/**
@@ -341,26 +317,12 @@ public class Game {
 	{
 		if(superPower == null) { return false; }
 	
-		if(ovni != null)
-		{	
-			ovni.damage(superPower.getDamage());
+		if(ovni != null) {	
+			damageOvni(superPower.getDamage());
 		}
-			
-		int i = 0;
-		while(i < destroyerList.length())	
-		{
-			if(damageDestroyer(i, superPower.getDamage())) {
-				i++;
-			}
-		}
-		
-		int j = 0;
-		while(j < regularList.length())	
-		{	
-			if(damageRegular(j, superPower.getDamage())) {
-				j++;
-			}
-		}
+				
+		score += destroyerList.damageAll(superPower.getDamage());
+		score += regularList.damageAll(superPower.getDamage());
 						
 		superPower = null;
 		
@@ -399,39 +361,49 @@ public class Game {
 	}
 	
 	/**
-	 * Damage destroyer
-	 * @param index Index of destroyer to damage
+	 * Damage destroyer at position row, column
+	 * @param row Row
+	 * @param column Column
 	 * @param harm Harm to cause
-	 * @return True if still alive, false otherwise
+	 * @return True if hit something, false otherwise
 	 */	
-	private boolean damageDestroyer(int index, int harm) 
+	private boolean damageDestroyerAtPosition(int row, int column, int harm) 
 	{
-		int newScore = destroyerList.damage(index, harm);
+		int newScore = destroyerList.damageAtPosition(row, column, harm);
 		
-		if(newScore < 0) {
-			return true;
-		} else {
-			score += newScore;
+		if(newScore == -2) {
+			//Didn't hit anything
 			return false;
-		}
+		} 
+
+		//Hit something
+		if(newScore > 0){
+			score += newScore;
+		}	
+		return true;
 	}
 	
 	/**
-	 * Damage regular ship
-	 * @param index Index of destroyer to damage
+	 * Damage regular ship at position row, column
+	 * @param row Row
+	 * @param column Column
 	 * @param harm Harm to cause
-	 * @return True if still alive, false otherwise
+	 * @return True if hit something, false otherwise
 	 */	
-	private boolean damageRegular(int index, int harm) 
+	private boolean damageRegularAtPosition(int row, int column, int harm) 
 	{
-		int newScore = regularList.damage(index, harm);
+		int newScore = regularList.damageAtPosition(row, column, harm);
 		
-		if(newScore < 0) {
-			return true;
-		} else {
-			score += newScore;
+		if(newScore == -2) {
+			//Didn't hit anything
 			return false;
-		}
+		} 
+
+		//Hit something
+		if(newScore > 0){
+			score += newScore;
+		}	
+		return true;
 	}
 	
 	/**
@@ -442,19 +414,12 @@ public class Game {
 	 * @return True if hit anything, false otherwise
 	 */	
 	private boolean damageEnemy(int r, int c, int harm) 
-	{
-		int bomb = bombList.getIndexAtPosition(r, c);
-		int regular = regularList.getIndexAtPosition(r, c);
-		int destructor = destroyerList.getIndexAtPosition(r, c);
-		
-		if(bomb >= 0) {
-			bombList.remove(bomb);
+	{		
+		if(bombList.damageBombAtPosition(r, c)) {
 			return true;
-		} else if(regular >= 0) {
-			damageRegular(regular, harm);
+		} else if(damageRegularAtPosition(r, c, harm)) {
 			return true;
-		} else if(destructor >= 0){
-			damageDestroyer(destructor, harm);
+		} else if(damageDestroyerAtPosition(r, c, harm)){	
 			return true;
 		} else if(ovni != null && ovni.isAt(r, c)){
 			damageOvni(harm);
@@ -495,25 +460,13 @@ public class Game {
 	 */
 	private boolean moveAliensDown() 
 	{
-		boolean isAlienAtBorder = false;
-		int i = 0;
-		while(!isAlienAtBorder && i < regularList.length())
-		{
-			isAlienAtBorder = regularList.get(i).isAtColumnBorder(alienDirection);
-			i++;
-		}
-		
-		i = 0;
-		while(!isAlienAtBorder && i < destroyerList.length())
-		{
-			isAlienAtBorder = destroyerList.get(i).isAtColumnBorder(alienDirection);
-			i++;
-		}
+		boolean isAlienAtBorder = regularList.isAnyAtColumnBorder(alienDirection) 
+									|| destroyerList.isAnyAtColumnBorder(alienDirection);
 		
 		if(isAlienAtBorder)
 		{			
-			for(int j = 0; j < regularList.length(); j++) { regularList.get(j).move(1, 0); }
-			for(int j = 0; j < destroyerList.length(); j++) { destroyerList.get(j).move(1, 0); }
+			regularList.moveAll(1, 0);
+			destroyerList.moveAll(1, 0);
 			
 			alienDirection = alienDirection.getOppositeDirection();
 		}
@@ -526,8 +479,8 @@ public class Game {
 	 */
 	private void moveAliensHorizontally() 
 	{
-		for(int j = 0; j < regularList.length(); j++) { regularList.get(j).move(0, alienDirection.getDeltaCol()); }
-		for(int j = 0; j < destroyerList.length(); j++) { destroyerList.get(j).move(0, alienDirection.getDeltaCol()); }
+		regularList.moveAll(0, alienDirection.getDeltaCol());
+		destroyerList.moveAll(0, alienDirection.getDeltaCol());
 	}
 
 	/**
@@ -560,19 +513,7 @@ public class Game {
 			return GameState.ALIEN_WIN;
 		}
 		
-		boolean isAnyAlienLastRow = false;
-		
-		int i = 0;	
-		while(!isAnyAlienLastRow && i < regularList.length()){
-			isAnyAlienLastRow = regularList.get(i).isAtLowestRow();
-			i++;
-		}
-		
-		i = 0;	
-		while(!isAnyAlienLastRow && i < destroyerList.length()){
-			isAnyAlienLastRow = destroyerList.get(i).isAtLowestRow();
-			i++;
-		}
+		boolean isAnyAlienLastRow = regularList.isAnyAtLowestRow() || destroyerList.isAnyAtLowestRow();
 		
 		if(isAnyAlienLastRow) {
 			return GameState.ALIEN_WIN;

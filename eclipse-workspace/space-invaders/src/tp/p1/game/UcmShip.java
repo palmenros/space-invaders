@@ -44,7 +44,11 @@ public class UcmShip extends Ship {
 	 */
 	public String toString()
 	{
-		return "^__^";
+		if(getHealth() > 0) {
+			return "^__^";			
+		} else {
+			return "!xx!";
+		}
 	}
 	
 	/**

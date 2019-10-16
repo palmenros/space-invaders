@@ -13,7 +13,7 @@ public class SuperpowerCommand extends SingleArgumentCommand {
 	 */
 	public SuperpowerCommand()
 	{
-		super("superpower", "p", "UCM-Ship releases a shock wave.");
+		super("shockwave", "w", "UCM-Ship releases a shock wave.");
 	}
 	
 	/**
