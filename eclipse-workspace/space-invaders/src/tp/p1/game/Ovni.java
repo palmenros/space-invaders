@@ -3,7 +3,7 @@ package tp.p1.game;
 import tp.p1.game.EnemyShip;
 
 /**
- * Class that represents an UFO
+ * Class that represents a UFO
  * @author Martín Gómez y Pedro Palacios
  */
 public class Ovni extends EnemyShip {

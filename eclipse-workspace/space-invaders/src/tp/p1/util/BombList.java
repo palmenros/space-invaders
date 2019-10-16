@@ -117,7 +117,7 @@ public class BombList
 		
 		if(num > 0)
 		{
-			stringBuilder.append(arr[0]);
+			stringBuilder.append(arr[0].toString());
 		}
 		
 		for (int i = 1; i<num; i++)

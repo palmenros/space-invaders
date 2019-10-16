@@ -14,11 +14,11 @@ public class MyStringUtils {
 	 * @return Repeated string
 	 */
 	public static String repeat(String elmnt, int length) {
-		String result = "";
+		StringBuilder stringBuilder = new StringBuilder("");
 		for (int i = 0; i < length; i++) {
-		    result += elmnt;
+		    stringBuilder.append(elmnt);
 		}
-		return result;
+		return stringBuilder.toString();
 	}
 
 	

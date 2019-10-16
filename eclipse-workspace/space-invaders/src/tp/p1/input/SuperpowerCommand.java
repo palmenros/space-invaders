@@ -25,7 +25,7 @@ public class SuperpowerCommand extends SingleArgumentCommand {
 		if(controller.getGame().useSuperPower()) {
 			controller.tick();
 		} else {
-			System.out.println("No superpower available");
+			System.out.println("No shock wave available");
 		}
 
 	}
