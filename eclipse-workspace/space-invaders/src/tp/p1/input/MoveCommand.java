@@ -36,7 +36,7 @@ public class MoveCommand extends Command {
 		if(parts.length != 3) {return false;}
 		
 		//Check the name of the command
-		if(!parts[0].equals(name) && !parts[0].equals(key)) {return false;}
+		if(!parts[0].equals(name) && !parts[0].equals(shortcut)) {return false;}
 		
 		//Check the direction
 		if(!parts[1].equals("right") && !parts[1].equals("left")) {return false;}

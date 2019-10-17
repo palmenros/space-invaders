@@ -39,7 +39,7 @@ public abstract class SingleArgumentCommand extends Command {
 		
 		String lower = line.toLowerCase();
 		
-		if( !lower.equals(name) && !lower.equals(key)) {return false;}
+		if( !lower.equals(name) && !lower.equals(shortcut)) {return false;}
 		
 		execute(controller);
 		

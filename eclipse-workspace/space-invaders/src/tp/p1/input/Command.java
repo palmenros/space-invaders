@@ -11,12 +11,12 @@ public abstract class Command {
 	/**
 	 *  Name of the command
 	 */
-	protected String name;
+	protected final String name;
 	
 	/**
 	 *  Alternative key of the command
 	 */
-	protected String key;
+	protected final String shortcut;
 	
 	
 	/**
@@ -27,12 +27,12 @@ public abstract class Command {
 	/**
 	 * Creates a new command
 	 * @param name	Name of the command
-	 * @param key	Small abbreviation of the command
+	 * @param shortcut	Small abbreviation of the command
 	 * @param help	Command help displayed
 	 */
-	public Command(String name, String key, String help) {
+	public Command(String name, String shortcut, String help) {
 		this.name = name.toLowerCase();
-		this.key = key.toLowerCase();
+		this.shortcut = shortcut.toLowerCase();
 		this.helpString = help;
 	}
 	
