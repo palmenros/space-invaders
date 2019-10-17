@@ -92,21 +92,6 @@ public class DestroyerShipList
 	}
 	
 	/**
-	 * Retrieve ship at index
-	 * @param i Index
-	 * @return Ship at index i or null if out of bounds
-	 */
-	private DestroyerShip get(int i)
-	{
-		if (i>=0 && i<num)
-		{
-			return arr[i];
-		}
-		
-		return null;
-	}
-	
-	/**
 	 *	Build string representation of list
 	 */
 	public String toString()
@@ -193,7 +178,7 @@ public class DestroyerShipList
 	{
 		for(int i = 0; i < length(); i++) {
 			if(rand.nextFloat() <= level.getFireRate()) {
-				Bomb bomb = get(i).shoot();
+				Bomb bomb = arr[i].shoot();
 				if(bomb != null) {
 					bombList.insert(bomb);
 				}
@@ -212,7 +197,7 @@ public class DestroyerShipList
 		int i = 0;
 		while(!isAlienAtBorder && i < length())
 		{
-			isAlienAtBorder = get(i).isAtColumnBorder(alienDirection);
+			isAlienAtBorder = arr[i].isAtColumnBorder(alienDirection);
 			i++;
 		}
 		return isAlienAtBorder;
@@ -227,7 +212,7 @@ public class DestroyerShipList
 	public void moveAll(int dr, int dc)
 	{
 		for(int i = 0; i < length(); i++) {
-			get(i).move(dr, dc);
+			arr[i].move(dr, dc);
 		}
 	}
 	
@@ -240,7 +225,7 @@ public class DestroyerShipList
 		boolean isAnyAlienLastRow = false;
 		int i = 0;	
 		while(!isAnyAlienLastRow && i < length()){
-			isAnyAlienLastRow = get(i).isAtLowestRow();
+			isAnyAlienLastRow = arr[i].isAtLowestRow();
 			i++;
 		}
 		

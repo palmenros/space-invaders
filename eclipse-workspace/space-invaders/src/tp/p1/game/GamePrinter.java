@@ -11,22 +11,22 @@ public class GamePrinter {
 	/**
 	 *  Number of rows of the board
 	 */
-	int numRows; 
+	private int numRows; 
 	
 	/**
 	 *  Number of columns of the board
 	 */
-	int numCols;
+	private int numCols;
 	
 	/**
 	 *  String representing the board
 	 */
-	String[][] board;
+	private String[][] board;
 		
 	/**
 	 * String that represents a space
 	 */
-	final String space = " ";
+	private final String space = " ";
 	
 	/**
 	 * Construct a new game printer from given game

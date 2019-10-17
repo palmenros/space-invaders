@@ -91,21 +91,6 @@ public class BombList
 	}
 	
 	/**
-	 * Retrieve bomb at index
-	 * @param i Index
-	 * @return Bomb at index i or null if out of bounds
-	 */
-	private Bomb get(int i)
-	{
-		if (i>=0 && i<num)
-		{
-			return arr[i];
-		}
-		
-		return null;
-	}
-	
-	/**
 	 *	Build string representation of list
 	 */
 	public String toString()
@@ -167,7 +152,7 @@ public class BombList
 	{
 		int i = 0;
 		while(i < length()) {
-			Bomb bomb = get(i);
+			Bomb bomb = arr[i];
 		
 			//Call update on bombs
 			if(!bomb.update()){
@@ -205,7 +190,7 @@ public class BombList
 	{
 		int i = 0;
 		while(i < length()) {
-			Bomb bomb = get(i);
+			Bomb bomb = arr[i];
 		
 			if(callback.shouldRemove(bomb)){
 				remove(i);

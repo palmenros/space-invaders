@@ -284,7 +284,7 @@ public class Game {
 		int remainingAliens = destroyerList.length() + regularList.length() + ( ovni == null ? 0 : 1 );
 	
 		stringBuilder.append("Remaining aliens: " + remainingAliens + "\n");
-		stringBuilder.append("Superpower: " + ( superPower == null ? "NO" : "YES" ) + "\n");
+		stringBuilder.append("ShockWave: " + ( superPower == null ? "NO" : "YES" ) + "\n");
 		
 		stringBuilder.append(gamePrinter.toString());
 		
@@ -317,14 +317,15 @@ public class Game {
 	{
 		if(superPower == null) { return false; }
 	
+		int damage = superPower.getDamage();
+		superPower = null;
+		
 		if(ovni != null) {	
-			damageOvni(superPower.getDamage());
+			damageOvni(damage);
 		}
 				
-		score += destroyerList.damageAll(superPower.getDamage());
-		score += regularList.damageAll(superPower.getDamage());
-						
-		superPower = null;
+		score += destroyerList.damageAll(damage);
+		score += regularList.damageAll(damage);						
 		
 		return true;
 	}

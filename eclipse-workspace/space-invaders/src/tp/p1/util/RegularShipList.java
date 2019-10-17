@@ -90,21 +90,6 @@ public class RegularShipList
 	}
 	
 	/**
-	 * Retrieve ship at index
-	 * @param i Index
-	 * @return Ship at index i or null if out of bounds
-	 */
-	private RegularShip get(int i)
-	{
-		if (i>=0 && i<num)
-		{
-			return arr[i];
-		}
-		
-		return null;
-	}
-	
-	/**
 	 *	Build string representation of list
 	 */
 	public String toString()
@@ -190,7 +175,7 @@ public class RegularShipList
 		int i = 0;
 		while(!isAlienAtBorder && i < length())
 		{
-			isAlienAtBorder = get(i).isAtColumnBorder(alienDirection);
+			isAlienAtBorder = arr[i].isAtColumnBorder(alienDirection);
 			i++;
 		}
 		return isAlienAtBorder;
@@ -205,7 +190,7 @@ public class RegularShipList
 	public void moveAll(int dr, int dc)
 	{
 		for(int i = 0; i < length(); i++) {
-			get(i).move(dr, dc);
+			arr[i].move(dr, dc);
 		}
 	}
 	
@@ -218,7 +203,7 @@ public class RegularShipList
 		boolean isAnyAlienLastRow = false;
 		int i = 0;	
 		while(!isAnyAlienLastRow && i < length()){
-			isAnyAlienLastRow = get(i).isAtLowestRow();
+			isAnyAlienLastRow = arr[i].isAtLowestRow();
 			i++;
 		}
 		
