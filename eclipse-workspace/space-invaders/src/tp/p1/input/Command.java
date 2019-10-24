@@ -1,6 +1,7 @@
 package tp.p1.input;
 
 import tp.p1.game.Controller;
+import tp.p1.game.Game;
 
 /**
  * Represents an executable command by the game
@@ -19,10 +20,13 @@ public abstract class Command {
 	protected final String shortcut;
 	
 	
+	private final String details;
+	
 	/**
 	 *  Help displayed with command
 	 */
-	protected String helpString;
+	private final String help;
+	
 	
 	/**
 	 * Creates a new command
@@ -30,36 +34,32 @@ public abstract class Command {
 	 * @param shortcut	Small abbreviation of the command
 	 * @param help	Command help displayed
 	 */
-	public Command(String name, String shortcut, String help) {
+	public Command(String name, String shortcut, String details, String help) {
 		this.name = name.toLowerCase();
 		this.shortcut = shortcut.toLowerCase();
-		this.helpString = help;
-	}
-	
-	/**
-	 * By default, the abbreviation will be the first character of the name
-	 * @param name	Name of the command
-	 * @param help Command help displayed
-	 */
-	public Command(String name, String help) {
-		this(name, name.substring(0, 1), help);
-	}
-	
+		this.details = details;
+		this.help = help;
+	}	
 	
 	/**
 	 * @return Help string of this command
 	 */
-	public String getHelp()
+	public String getHelpText()
 	{
-		return helpString;
+		return details + " : " + help;	
 	}
+		
+	public abstract boolean execute(Game game, Controller controller) throws CommandExecuteException;
+	public abstract Command parse(String[] words) throws IncorrectArgumentNumberException, IncorrectArgumentFormatException;
+
 	
 	/**
-	 * Try executing this command with the given line
-	 * @param line	Command line to try to parse
-	 * @param controller Controller
-	 * @return	Returns true if succeeded, false otherwise
+	 * @param name Name to match against
+	 * @return True if name matches shortcut or name
 	 */
-	public abstract boolean tryExecute(String line, Controller controller);
-		
+	protected boolean matchCommandName(String name) {
+		return this.shortcut.equalsIgnoreCase(name) ||
+		this.name.equalsIgnoreCase(name);
+	}
+	
 }

@@ -1,48 +1,43 @@
 package tp.p1.input;
 
 import tp.p1.game.Controller;
+import tp.p1.game.Game;
 
 /**
  * None command
  * @author Martín Gómez y Pedro Palacios
  */
-public class NoneCommand extends SingleArgumentCommand {
+public class NoneCommand extends NoParamsCommand {
 
 	/**
 	 * Construct new command
 	 */
 	public NoneCommand() {
-		super("none", "Skips one cycle.");
+		super("none", "n", "[none]", "Skips one cycle.");
 	}
 
 	/**
 	 * Execute none command
 	 */
 	@Override
-	public void execute(Controller controller) {
-		controller.tick();
+	public boolean execute(Game game, Controller controller) {
+		return true;
 	}
 	
 	/**
 	 *	Returns true if empty string or none command
+	 * @throws IncorrectArgumentFormatException 
+	 * @throws IncorrectArgumentNumberException 
 	 */
 	@Override
-	public boolean tryExecute(String line, Controller controller)
+	public Command parse(String[] commandWords) throws IncorrectArgumentNumberException, IncorrectArgumentFormatException
 	{
-		if(line.equals(""))
+		if(commandWords.length == 1 && commandWords[0].equals(""))
 		{
-			execute(controller);
-			return true;
+			return this;
 		}
 		
-		return super.tryExecute(line, controller);
+		return super.parse(commandWords);
 	}
-	
-	/**
-	 *	Return none command help string
-	 */
-	public String getHelp()
-	{
-		return "[" + name + "]: " + helpString;
-	}
+
 }

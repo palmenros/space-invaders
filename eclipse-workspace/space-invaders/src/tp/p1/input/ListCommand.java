@@ -6,25 +6,29 @@ import tp.p1.game.*;
  * List command
  * @author Martín Gómez y Pedro Palacios
  */
-public class ListCommand extends SingleArgumentCommand {
+public class ListCommand extends NoParamsCommand {
 
 	/**
 	 * Constructs new list command
 	 */
 	public ListCommand()
 	{
-		super("list", "Prints the list of available ships.");
+		super("list", "l", "list", "Prints the list of available ships.");
 	}
 		
 	/**
 	 * Execute list command
 	 */
 	@Override
-	public void execute(Controller controller) {
-		System.out.println(RegularShip.getHelpMessage());
-		System.out.println(DestroyerShip.getHelpMessage());
-		System.out.println(Ovni.getHelpMessage());
-		System.out.println(UcmShip.getHelpMessage());
+	public boolean execute(Game game, Controller controller) {
+		controller.displayShipList(new String[] {
+				RegularShip.getHelpMessage(),
+				DestroyerShip.getHelpMessage(),
+				Ovni.getHelpMessage(),
+				UcmShip.getHelpMessage()
+		});
+		
+		return false;
 	}
 
 }

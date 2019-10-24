@@ -153,15 +153,7 @@ public class Game {
 			destroyerList.insert(new DestroyerShip(INITIAL_COMMON_ALIENS_ROW + row, INITIAL_COMMON_ALIENS_COLUMN + columnOffset + i));
 		}
 	}
-	
-	/**
-	 * Draw the game on screen
-	 */
-	public void draw()
-	{
-		System.out.print(this.toString());
-	}
-	
+		
 	/**
 	 * Do another game cycle
 	 * @return Game state that indicates if game has finished
@@ -170,7 +162,6 @@ public class Game {
 	{
 		computerAction();
 		update();
-		draw();		
 	
 		return getGameState();
 	}
@@ -297,7 +288,6 @@ public class Game {
 	public void reset()
 	{
 		initGame();
-		draw();
 	}
 	
 	/**

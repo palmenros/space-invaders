@@ -1,27 +1,28 @@
 package tp.p1.input;
 
 import tp.p1.game.Controller;
+import tp.p1.game.Game;
 
 /**
  * Reset command
  * @author Martín Gómez y Pedro Palacios
  */
-public class ResetCommand extends SingleArgumentCommand {
+public class ResetCommand extends NoParamsCommand {
 
 	/**
 	 * Constructs reset command
 	 */
 	public ResetCommand() {
-		super("reset", "Starts a new game.");
+		super("reset", "r", "reset", "Starts a new game.");
 	}
 
 	/**
 	 * Executes reset command
 	 */
 	@Override
-	public void execute(Controller controller) {
-		System.out.println("Game Reset!");
-		controller.getGame().reset();
+	public boolean execute(Game game, Controller controller) {
+		controller.resetGame();
+		return false;
 	}
 
 }

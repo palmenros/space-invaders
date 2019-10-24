@@ -1,31 +1,33 @@
 package tp.p1.input;
 
 import tp.p1.game.Controller;
+import tp.p1.game.Game;
 
 /**
  * Superpower command
  * @author Martín Gómez y Pedro Palacios
  */
-public class SuperpowerCommand extends SingleArgumentCommand {
+public class SuperpowerCommand extends NoParamsCommand {
 
 	/**
 	 * Instantiate superpower command class
 	 */
 	public SuperpowerCommand()
 	{
-		super("shockwave", "w", "UCM-Ship releases a shock wave.");
+		super("shockwave", "w", "shockwave", "UCM-Ship releases a shock wave.");
 	}
 	
 	/**
 	 * Execute superpower command
+	 * @throws CommandExecuteException 
 	 */
 	@Override
-	public void execute(Controller controller) {
+	public boolean execute(Game game, Controller controller) throws CommandExecuteException {
 		
-		if(controller.getGame().useSuperPower()) {
-			controller.tick();
+		if(game.useSuperPower()) {
+			return true;
 		} else {
-			System.out.println("No shock wave available");
+			throw new CommandExecuteException("No shock wave available");
 		}
 
 	}

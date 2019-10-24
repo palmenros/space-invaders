@@ -12,7 +12,7 @@ public class MoveCommand extends Command {
 	 * Constructs the key and the command of move using the first letter as key
 	 */
 	public MoveCommand() {
-		super("move", "<left|right><1|2>: Moves UCM-Ship to the indicated direction.");
+		super("move", "m", "move <left|right><1|2>", "Moves UCM-Ship to the indicated direction.");
 	}
 	
 	/**
@@ -25,56 +25,51 @@ public class MoveCommand extends Command {
 	 */
 	private String direction;
 	
-	/**
-	 *	Try executing move command and check data
-	 */
+	
 	@Override
-	public boolean tryExecute(String line, Controller controller) {
-		String[] parts = line.toLowerCase().split(" ");
-		
-		//Assert there is a command and two arguments
-		if(parts.length != 3) {return false;}
-		
+	public Command parse(String[] words) throws IncorrectArgumentNumberException, IncorrectArgumentFormatException
+	{	
 		//Check the name of the command
-		if(!parts[0].equals(name) && !parts[0].equals(shortcut)) {return false;}
+		if( words.length < 1 || !words[0].equals(name) && !words[0].equals(shortcut)) {
+			return null;
+		}
+		
+		if(words.length != 3) {
+			throw new IncorrectArgumentNumberException(3);
+		}
 		
 		//Check the direction
-		if(!parts[1].equals("right") && !parts[1].equals("left")) {return false;}
+		if(!words[1].equals("right") && !words[1].equals("left")) {
+			throw new IncorrectArgumentFormatException();
+		}
 		
 		//Check the number
-		if(!parts[2].equals("1") && !parts[2].equals("2")) { return false;}
+		if(!words[2].equals("1") && !words[2].equals("2")) {
+			throw new IncorrectArgumentFormatException();
+		}
 		
 		//Execute the command
-		number = Integer.parseInt(parts[2]);
-		direction = parts[1];	
-		execute(controller);
+		number = Integer.parseInt(words[2]);
+		direction = words[1];	
 		
-		return true;
+		return this;
 	}
 	
 	/**
 	 * Executes move command
 	 * @param controller Controller
+	 * @throws CommandExecuteException 
 	 */
-	private void execute(Controller controller)
+	@Override
+	public boolean execute(Game game, Controller controller) throws CommandExecuteException
 	{
-		UcmShip ship = controller.getGame().getUcmShip();
+		UcmShip ship = game.getUcmShip();
 		int dc = number * ( direction.equals("right") ? 1 : -1 );
 		
 		if(ship.move(0, dc)) {
-			controller.tick();
+			return true;
 		} else {
-			System.out.println("Invalid move");
+			throw new CommandExecuteException("Invalid move");
 		}
 	}
-	
-	
-	/**
-	 *	Return move help string
-	 */
-	public String getHelp()
-	{
-		return name + " " + helpString;
-	}
-	
 }
