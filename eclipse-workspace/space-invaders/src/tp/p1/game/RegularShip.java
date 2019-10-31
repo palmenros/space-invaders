@@ -4,7 +4,7 @@ package tp.p1.game;
  * Class that represents a common ship that cannot shoot
  * @author Martín Gómez y Pedro Palacios
  */
-public class RegularShip extends EnemyShip {
+public class RegularShip extends AlienShip {
 	
 	/**
 	 * Default health
@@ -21,9 +21,9 @@ public class RegularShip extends EnemyShip {
 	 * @param r Row
 	 * @param c Column
 	 */
-	public RegularShip(int r, int c)
+	public RegularShip(Game game, int r, int c)
 	{
-		super(r, c, HEALTH, SCORE);
+		super(game, r, c, HEALTH, SCORE);
 	}
 	
 	/**

@@ -26,17 +26,17 @@ public class UcmShip extends Ship {
 	 * @param r Row
 	 * @param c Column
 	 */
-	public UcmShip(int r, int c)
+	public UcmShip(Game game, int r, int c)
 	{
-		super(r, c, HEALTH);
+		super(game, r, c, HEALTH);
 	}
 	
 	/**
 	 * Construct new UCM ship at default location 
 	 */
-	public UcmShip()
+	public UcmShip(Game game)
 	{
-		super(DEFAULT_ROW, DEFAULT_COL, HEALTH);
+		super(game, DEFAULT_ROW, DEFAULT_COL, HEALTH);
 	}
 	
 	/**
@@ -57,7 +57,7 @@ public class UcmShip extends Ship {
 	 */
 	static public String getHelpMessage()
 	{
-		return "^__^: Harm: " + Missile.DEFAULT_HARM + " - Shield: " + HEALTH;
+		return "^__^: Harm: " + UCMMissile.DEFAULT_HARM + " - Shield: " + HEALTH;
 	}
 		
 	/**

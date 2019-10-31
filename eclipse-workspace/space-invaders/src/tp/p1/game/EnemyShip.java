@@ -18,9 +18,9 @@ abstract public class EnemyShip extends Ship {
 	 * @param health Health
 	 * @param score Score
 	 */
-	public EnemyShip(int r, int c, int health, int score)
+	public EnemyShip(Game game, int r, int c, int health, int score)
 	{
-		super(r, c, health);
+		super(game, r, c, health);
 		this.score = score;
 	}
 	

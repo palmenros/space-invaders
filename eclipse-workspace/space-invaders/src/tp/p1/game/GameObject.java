@@ -17,12 +17,18 @@ public abstract class GameObject {
 	private int c;
 
 	/**
+	 * Game to which the object belongs
+	 */
+	protected Game game;
+	
+	/**
 	 * Create new GameObject at position
 	 * @param r Row
 	 * @param c Column
 	 */
-	public GameObject(int r, int c)
+	public GameObject(Game game, int r, int c)
 	{
+		this.game = game;
 		this.r = r;
 		this.c = c;
 	}
@@ -138,4 +144,21 @@ public abstract class GameObject {
 	 * @return True if object should continue existing next cycle, false otherwise
 	 */
 	public abstract boolean update();
+
+	/**
+	 * Computer action
+	 */
+	public void computerAction()
+	{
+		//TODO: Implement in child classes
+	}
+		
+	/**
+	 *  Called on object destruction
+	 */
+	public void destroy()
+	{
+		//TODO: Implement custom destruction logic
+	}
+	
 }

@@ -21,9 +21,9 @@ public class Ovni extends EnemyShip {
 	/**
 	 * Construct an Ovni at its default position
 	 */
-	public Ovni()
+	public Ovni(Game game)
 	{
-		this(0, Game.COL_NUM);
+		this(game, 0, Game.COL_NUM);
 	}
 	
 	/**
@@ -31,9 +31,9 @@ public class Ovni extends EnemyShip {
 	 * @param r Row
 	 * @param c Column
 	 */
-	public Ovni(int r, int c)
+	public Ovni(Game game, int r, int c)
 	{
-		super(r, c, HEALTH, SCORE);
+		super(game, r, c, HEALTH, SCORE);
 	}
 	
 	/**

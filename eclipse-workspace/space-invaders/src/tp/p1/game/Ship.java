@@ -17,9 +17,9 @@ abstract public class Ship extends GameObject {
 	 * @param c Column
 	 * @param health Health
 	 */
-	public Ship(int r, int c, int health)
+	public Ship(Game game, int r, int c, int health)
 	{
-		super(r, c);
+		super(game, r, c);
 		this.health = Math.max(0, health);
 	}
 	

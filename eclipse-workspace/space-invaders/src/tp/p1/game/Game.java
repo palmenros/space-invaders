@@ -79,12 +79,12 @@ public class Game {
 	/**
 	 * Missile
 	 */
-	private Missile missile;
+	private UCMMissile missile;
 	
 	/**
 	 * SuperPower
 	 */
-	private SuperPower superPower;
+	private ShockWave superPower;
 	
 	/**
 	 * List of bombs
@@ -127,7 +127,7 @@ public class Game {
 		
 		alienDirection = Direction.LEFT;
 		
-		ucmShip = new UcmShip();
+		ucmShip = new UcmShip(this);
 		ovni = null;
 		missile = null;
 		superPower = null;
@@ -142,7 +142,7 @@ public class Game {
 		{
 			for(int col = 0; col  < INITIAL_COMMON_ALIENS_PER_ROW; col++)
 			{
-				regularList.insert(new RegularShip( INITIAL_COMMON_ALIENS_ROW + row, INITIAL_COMMON_ALIENS_COLUMN + col ));
+				regularList.insert(new RegularShip( this, INITIAL_COMMON_ALIENS_ROW + row, INITIAL_COMMON_ALIENS_COLUMN + col ));
 			}
 		}
 		
@@ -150,7 +150,7 @@ public class Game {
 		int columnOffset = (INITIAL_COMMON_ALIENS_PER_ROW - destroyerShipNum) / 2;
 		for (int i = 0; i < destroyerShipNum; i++)
 		{
-			destroyerList.insert(new DestroyerShip(INITIAL_COMMON_ALIENS_ROW + row, INITIAL_COMMON_ALIENS_COLUMN + columnOffset + i));
+			destroyerList.insert(new DestroyerShip(this, INITIAL_COMMON_ALIENS_ROW + row, INITIAL_COMMON_ALIENS_COLUMN + columnOffset + i));
 		}
 	}
 		
@@ -177,7 +177,7 @@ public class Game {
 		//Ovni
 		if(ovni == null && rand.nextFloat() <= level.getUfoRate())
 		{
-			ovni = new Ovni();
+			ovni = new Ovni(this);
 		}
 	}
 	
@@ -307,7 +307,7 @@ public class Game {
 	{
 		if(superPower == null) { return false; }
 	
-		int damage = superPower.getDamage();
+		int damage = superPower.getHarm();
 		superPower = null;
 		
 		if(ovni != null) {	
@@ -328,7 +328,7 @@ public class Game {
 	{
 		if(missile != null) { return false; }
 		
-		missile = new Missile(ucmShip.getRow(), ucmShip.getCol());
+		missile = new UCMMissile(this, ucmShip.getRow(), ucmShip.getCol());
 		
 		return true;
 	}
@@ -344,7 +344,7 @@ public class Game {
 		{
 			score += ovni.getScore();
 			ovni = null;
-			superPower = new SuperPower();			
+			superPower = new ShockWave(this, 0, 0);			
 			return false;
 		} else {
 			return true;

@@ -4,7 +4,7 @@ package tp.p1.game;
  * Class that represents a missile thrown by the UCM-Ship
  * @author Martín Gómez y Pedro Palacios
  */
-public class Missile extends GameObject {
+public class UCMMissile extends Weapon {
 
 	/**
 	 * Default harm that the missile will do to enemies
@@ -12,30 +12,27 @@ public class Missile extends GameObject {
 	public static final int DEFAULT_HARM = 1;
 	
 	/**
-	 *  Harm this missile will do to enemies
-	 */
-	private int harm;
-	
-	/**
 	 * Construct a new missile at position with default harm
+	 * @param game Game
 	 * @param r Row
 	 * @param c Column
+	 * @param harm Harm which the missile produces
 	 */
-	public Missile(int r, int c)
+	public UCMMissile(Game game, int r, int c)
 	{
-		this(r, c, DEFAULT_HARM);
+		this(game, r, c, DEFAULT_HARM);
 	}
 	
 	/**
 	 * Construct a new missile at position with given harm
+	 * @param game Game
 	 * @param r Row
 	 * @param c Column
 	 * @param harm Harm
 	 */
-	public Missile(int r, int c, int harm)
+	public UCMMissile(Game game, int r, int c, int harm)
 	{
-		super(r, c);
-		this.harm = harm;
+		super(game, r, c, harm);
 	}
 
 	/**
@@ -46,14 +43,7 @@ public class Missile extends GameObject {
 		return "oo";
 	}
 	
-	/**
-	 * Get harm
-	 * @return harm
-	 */
-	public int getHarm()
-	{
-		return harm;
-	}
+	
 	
 	/**
 	 * Update missile position

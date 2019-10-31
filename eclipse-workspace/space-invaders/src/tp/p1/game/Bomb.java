@@ -4,7 +4,7 @@ package tp.p1.game;
  * Bomb
  * @author Martín Gómez y Pedro Palacios
  */
-public class Bomb extends GameObject {
+public class Bomb extends Weapon {
 	
 	/**
 	 * Owner which has shot this bomb
@@ -14,13 +14,14 @@ public class Bomb extends GameObject {
 	
 	/**
 	 * Create a new bomb
+	 * @param game Game
 	 * @param r Row
 	 * @param c Column
 	 * @param owner Owner of this bomb
 	 */
-	public Bomb(int r, int c, DestroyerShip owner)
+	public Bomb(Game game, int r, int c, DestroyerShip owner)
 	{
-		super(r, c);
+		super(game, r, c, owner.getHarm());
 		this.owner = owner;
 	}
 	
@@ -38,15 +39,6 @@ public class Bomb extends GameObject {
 	public void destroy()
 	{
 		owner.resetBomb();
-	}
-	
-	/**
-	 * Returns harm that this bomb inflicts, which is the same of the owner
-	 * @return Harm this bomb inflicts
-	 */
-	public int getHarm()
-	{
-		return owner.getHarm();
 	}
 	
 	/**

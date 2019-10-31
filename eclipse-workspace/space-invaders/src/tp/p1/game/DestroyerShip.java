@@ -4,7 +4,7 @@ package tp.p1.game;
  * Destroyer ship
  * @author Martín Gómez y Pedro Palacios 
  */
-public class DestroyerShip extends EnemyShip {
+public class DestroyerShip extends AlienShip {
 
 	/**
 	 * Default health of destroyer ship
@@ -32,9 +32,9 @@ public class DestroyerShip extends EnemyShip {
 	 * @param r Row
 	 * @param c Column
 	 */
-	public DestroyerShip(int r, int c)
+	public DestroyerShip(Game game, int r, int c)
 	{
-		super(r, c, HEALTH, SCORE);
+		super(game, r, c, HEALTH, SCORE);
 	}
 	
 	/**
@@ -64,7 +64,7 @@ public class DestroyerShip extends EnemyShip {
 			return null;
 		}
 		canShoot = false;
-		return new Bomb(getRow(), getCol(), this);
+		return new Bomb(game, getRow(), getCol(), this);
 	}
 
 	/**
