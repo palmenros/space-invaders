@@ -53,5 +53,36 @@ abstract public class EnemyShip extends Ship {
 		return stringBuilder.toString();
 	}
 	
-
+	/**
+	 *	Receive missile attack
+	 *  @param dmg Damage to receive
+	 *  @return True if affected
+	 */
+	@Override
+	public boolean receiveMissileAttack(int dmg) {
+		damage(dmg);
+		return true;
+	}
+	
+	/**
+	 *	Receive ShockWave attack
+	 *  @param dmg Damage to receive
+	 *  @return True if affected
+	 */
+	@Override
+	public boolean receiveShockWaveAttack(int dmg) {
+		damage(dmg);
+		return true;
+	}
+	
+	/**
+	 * Called on destroy
+	 */
+	@Override
+	public void destroy() {
+		game.receivePoints(score);
+		super.destroy();
+	}
+	
+	
 }

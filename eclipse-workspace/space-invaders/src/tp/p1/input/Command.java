@@ -1,7 +1,7 @@
 package tp.p1.input;
 
 import tp.p1.game.Controller;
-import tp.p1.game.Game;
+import tp.p1.game.IPlayerController;
 
 /**
  * Represents an executable command by the game
@@ -49,7 +49,7 @@ public abstract class Command {
 		return details + " : " + help;	
 	}
 		
-	public abstract boolean execute(Game game, Controller controller) throws CommandExecuteException;
+	public abstract boolean execute(IPlayerController playerController, Controller controller) throws CommandExecuteException;
 	public abstract Command parse(String[] words) throws IncorrectArgumentNumberException, IncorrectArgumentFormatException;
 
 	

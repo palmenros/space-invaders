@@ -1,7 +1,7 @@
 package tp.p1.input;
 
 import tp.p1.game.Controller;
-import tp.p1.game.Game;
+import tp.p1.game.IPlayerController;
 
 /**
  * Exit command
@@ -20,7 +20,7 @@ public class ExitCommand extends NoParamsCommand {
 	 *	Executes exit command
 	 */
 	@Override
-	public boolean execute(Game game, Controller controller) {
+	public boolean execute(IPlayerController playerController, Controller controller) {
 		controller.exit();
 		return false;
 	}

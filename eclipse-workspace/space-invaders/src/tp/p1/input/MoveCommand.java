@@ -61,12 +61,11 @@ public class MoveCommand extends Command {
 	 * @throws CommandExecuteException 
 	 */
 	@Override
-	public boolean execute(Game game, Controller controller) throws CommandExecuteException
+	public boolean execute(IPlayerController playerController, Controller controller) throws CommandExecuteException
 	{
-		UcmShip ship = game.getUcmShip();
 		int dc = number * ( direction.equals("right") ? 1 : -1 );
 		
-		if(ship.move(0, dc)) {
+		if(playerController.move(dc)) {
 			return true;
 		} else {
 			throw new CommandExecuteException("Invalid move");

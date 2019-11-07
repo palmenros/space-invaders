@@ -42,14 +42,35 @@ public class UCMMissile extends Weapon {
 	{
 		return "oo";
 	}
-	
-	
-	
+		
 	/**
 	 * Update missile position
 	 */
-	public boolean update()
+	@Override
+	public void update()
 	{
-		return move(-1,0);
+		move(-1,0);
 	}
+	
+	/**
+	 *	Receive bomb attack
+	 *  @param dmg Damage to receive
+	 *  @return True if affected
+	 */
+	@Override
+	public boolean receiveBombAttack(int dmg) {
+		damage(dmg);
+		return true;
+	}
+	
+	/**
+	 * Called on destroy
+	 */
+	@Override
+	public void destroy()
+	{
+		game.enableMissile();
+		super.destroy();
+	}
+		
 }

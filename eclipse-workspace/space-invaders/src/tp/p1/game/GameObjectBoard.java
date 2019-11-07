@@ -73,9 +73,9 @@ public class GameObjectBoard {
 	 *  Call computer action in every game object
 	 */
 	public void computerAction()
-	{
-		for(GameObject e : arr) {
-			e.computerAction();
+	{		
+		for(int i = 0; i < num; i++) {
+			arr[i].computerAction();
 		}
 	}
 	
@@ -83,16 +83,59 @@ public class GameObjectBoard {
 	 * Call update on every game object
 	 */
 	public void update() {
+		
+		for(int i = 0; i < num; i++) {
+			arr[i].update();
+		}	
+		removeDead();
+	}
+	
+	/**
+	 * Remove all dead game objects
+	 */
+	private void removeDead() {
 		int i = 0;
 		while(i < num) {
 			GameObject object = arr[i];
 		
-			if(!object.update()){
+			if(!object.isAlive()){
 				remove(i);
 				i--;
 			}
 			i++;
 		}
+
 	}
 	
+	/**
+	 * Returns object at position
+	 * @param r Row
+	 * @param c Column
+	 * @return GameObject if found, null otherwise
+	 */
+	public GameObject getAt(int r, int c) {
+		for(int i = 0; i < num; i++) {
+			GameObject object = arr[i];
+			if(object.isAt(r, c)) {
+				return object;
+			}
+		}
+
+		return null;
+	}
+	
+	/**
+	 * Get string representation of object at position
+	 * @param r Row
+	 * @param c Column
+	 * @return String representation of object at position
+	 */
+	public String toString(int r, int c) {
+		GameObject obj = getAt(r, c);
+		if(obj != null) {
+			return obj.toString();
+		} else {
+			return "";
+		}
+	}
 }

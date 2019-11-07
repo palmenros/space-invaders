@@ -22,6 +22,11 @@ public class UcmShip extends Ship {
 	private static final int HEALTH = 3;
 	
 	/**
+	 * Reference to missile
+	 */
+	private UCMMissile missile = null;
+	
+	/**
 	 * Construct new UCM ship at location
 	 * @param r Row
 	 * @param c Column
@@ -38,6 +43,7 @@ public class UcmShip extends Ship {
 	{
 		super(game, DEFAULT_ROW, DEFAULT_COL, HEALTH);
 	}
+	
 	
 	/**
 	 * Get string representation of UCM Ship
@@ -63,9 +69,42 @@ public class UcmShip extends Ship {
 	/**
 	 * Update the ship.
 	 */
-	public boolean update()
+	public void update()
 	{
 		//Ship is always alive unless killed by enemies, which is handled by game.
+	}
+	
+	/**
+	 * Shoot a missile
+	 * @return true if succeeded, false otherwise
+	 */
+	public boolean shoot()
+	{
+		if(missile != null) { return false; }
+		
+		missile = new UCMMissile(game, getRow(), getCol());
+		game.addObject(missile);
+		
 		return true;
 	}
+	
+	/**
+	 * Enables missile so it can be shot again
+	 */
+	public void enableMissile()
+	{
+		missile = null;
+	}
+	
+	/**
+	 *	Receive bomb attack
+	 *  @param dmg Damage to receive
+	 *  @return True if affected
+	 */
+	@Override
+	public boolean receiveBombAttack(int dmg) {
+		damage(dmg);
+		return true;
+	}
+	
 }

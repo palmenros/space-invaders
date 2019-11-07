@@ -1,7 +1,7 @@
 package tp.p1.input;
 
 import tp.p1.game.Controller;
-import tp.p1.game.Game;
+import tp.p1.game.IPlayerController;
 
 /**
  * None command
@@ -20,7 +20,7 @@ public class NoneCommand extends NoParamsCommand {
 	 * Execute none command
 	 */
 	@Override
-	public boolean execute(Game game, Controller controller) {
+	public boolean execute(IPlayerController playerController, Controller controller) {
 		return true;
 	}
 	

@@ -4,7 +4,7 @@ package tp.p1.game;
  * Abstract class that represents a game object on the board
  * @author Martín Gómez y Pedro Palacios
  */
-public abstract class GameObject {
+public abstract class GameObject implements IAttack {
 
 	/**
 	 * Row position at the board
@@ -22,17 +22,36 @@ public abstract class GameObject {
 	protected Game game;
 	
 	/**
+	 *  Health of the object. Always greater or equals to 0.
+	 */
+	private int health;
+
+	
+	/**
 	 * Create new GameObject at position
 	 * @param r Row
 	 * @param c Column
 	 */
 	public GameObject(Game game, int r, int c)
 	{
+		this(game,r , c, 1);
+	}
+
+	/**
+	 * Create new GameObject with health
+	 * @param game Game
+	 * @param r Row
+	 * @param c Column
+	 * @param health Health
+	 */
+	public GameObject(Game game, int r, int c, int health)
+	{
 		this.game = game;
 		this.r = r;
 		this.c = c;
+		this.health = Math.max(0, health);
 	}
-
+	
 	/**
 	 * Get row
 	 * @return Row
@@ -83,14 +102,12 @@ public abstract class GameObject {
 	 * @param dc Delta of column to move
 	 * @return True if could move, false otherwise
 	 */
-	public boolean move(int dr, int dc)
+	public void move(int dr, int dc)
 	{
-		if(!canMove(dr, dc)) {return false;}
+		if(!canMove(dr, dc)) { kill(); }
 		
 		r += dr;
 		c += dc;
-		
-		return true;
 	}
 	
 	/**
@@ -141,9 +158,8 @@ public abstract class GameObject {
 	
 	/**
 	 * Update this GameObject
-	 * @return True if object should continue existing next cycle, false otherwise
 	 */
-	public abstract boolean update();
+	public abstract void update();
 
 	/**
 	 * Computer action
@@ -161,4 +177,39 @@ public abstract class GameObject {
 		//TODO: Implement custom destruction logic
 	}
 	
+	/**
+	 * Damage the ship
+	 * @param damagePoints Health to remove
+	 * @return True if the ship is still alive, false otherwise
+	 */
+	public boolean damage(int damagePoints)
+	{
+		health = Math.max(0, health - damagePoints);
+		return health > 0;
+	}
+	
+	/**
+	 * Get health
+	 * @return Health
+	 */
+	public int getHealth()
+	{
+		return health;
+	}
+	
+	/**
+	 * @return True if alive
+	 */
+	public boolean isAlive()
+	{
+		return health > 0;
+	}
+	
+	/**
+	 * Kill object 
+	 */
+	public void kill()
+	{
+		health = 0;
+	}
 }

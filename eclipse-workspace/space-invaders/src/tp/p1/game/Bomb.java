@@ -39,13 +39,31 @@ public class Bomb extends Weapon {
 	public void destroy()
 	{
 		owner.resetBomb();
+		super.destroy();
 	}
 	
 	/**
 	 * Update bomb
 	 */
-	public boolean update()
+	public void update()
 	{
-		return move(1,0);
+		
+		GameObject object = game.getAt(getRow() + 1, getCol());
+		if(object != null && object.receiveBombAttack(getHarm())) {
+			kill();
+		}
+	
+		move(1,0);	
+	}
+		
+	/**
+	 *	Receive missile attack
+	 *  @param dmg Damage to receive
+	 *  @return True if affected
+	 */
+	@Override
+	public boolean receiveMissileAttack(int dmg) {
+		damage(dmg);
+		return true;
 	}
 }

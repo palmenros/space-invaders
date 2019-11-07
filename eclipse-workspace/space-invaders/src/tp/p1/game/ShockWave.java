@@ -37,9 +37,9 @@ public class ShockWave extends Weapon {
 	 * The shockwave does not update, so this method will not be implemented
 	 */
 	@Override
-	public boolean update()
+	public void update()
 	{
-		return false;
+		//Do nothing
 	}
 	
 

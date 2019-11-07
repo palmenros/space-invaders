@@ -7,6 +7,11 @@ package tp.p1.game;
 public class DestroyerShip extends AlienShip {
 
 	/**
+	 * Count of destroyer ships
+	 */
+	private static int destroyerCount = 0;
+	
+	/**
 	 * Default health of destroyer ship
 	 */
 	private static final int HEALTH = 1;
@@ -35,6 +40,7 @@ public class DestroyerShip extends AlienShip {
 	public DestroyerShip(Game game, int r, int c)
 	{
 		super(game, r, c, HEALTH, SCORE);
+		destroyerCount++;
 	}
 	
 	/**
@@ -87,9 +93,25 @@ public class DestroyerShip extends AlienShip {
 	/**
 	 * Update destroyer ship
 	 */
-	public boolean update()
+	public void update()
 	{
-		//Do nothing
-		return true;
+		//Call parent update
+		super.update();
+	}
+	
+	/**
+	 * Delete object
+	 */
+	public void destroy() {
+		destroyerCount--;
+		super.destroy();
+	}
+	
+	/**
+	 * Return count of destroyer ships that are still alive
+	 * @return count of alive destroyer ships
+	 */
+	public static int getDestroyerShipCount() {
+		return destroyerCount;
 	}
 }

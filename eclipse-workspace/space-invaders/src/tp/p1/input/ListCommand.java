@@ -20,7 +20,7 @@ public class ListCommand extends NoParamsCommand {
 	 * Execute list command
 	 */
 	@Override
-	public boolean execute(Game game, Controller controller) {
+	public boolean execute(IPlayerController playerController, Controller controller) {
 		controller.displayShipList(new String[] {
 				RegularShip.getHelpMessage(),
 				DestroyerShip.getHelpMessage(),

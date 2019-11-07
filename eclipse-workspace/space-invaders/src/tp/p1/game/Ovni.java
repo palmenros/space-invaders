@@ -6,8 +6,22 @@ import tp.p1.game.EnemyShip;
  * Class that represents a UFO
  * @author Martín Gómez y Pedro Palacios
  */
-public class Ovni extends EnemyShip {
+/**
+ * @author usuario_local
+ *
+ */
+public class Ovni extends EnemyShip implements IExecuteRandomActions {
 
+	/**
+	 *  Total count of ovnis
+	 */
+	private static int ovniCount = 0;
+	
+	/**
+	 *  Max Ovnis that can be on the game at the same time
+	 */
+	private static final int MAX_OVNIS = 1;
+	
 	/**
 	 * Default health
 	 */
@@ -34,6 +48,7 @@ public class Ovni extends EnemyShip {
 	public Ovni(Game game, int r, int c)
 	{
 		super(game, r, c, HEALTH, SCORE);
+		ovniCount++;
 	}
 	
 	/**
@@ -56,8 +71,39 @@ public class Ovni extends EnemyShip {
 	/**
 	 * Update ovni position
 	 */
-	public boolean update()
+	@Override
+	public void update()
 	{
-		return move(0,-1);
+		move(0,-1);
+	}
+	
+	/**
+	 * Destroy method
+	 * 
+	 */
+	@Override
+	public void destroy() {
+		ovniCount--;
+		game.enableShockWave();
+		super.destroy();
+	}
+
+	/**
+	 * Static computer action for Ovni
+	 * @param game Game
+	 */
+	public static void staticComputerAction(Game game)
+	{
+		if(ovniCount < MAX_OVNIS && IExecuteRandomActions.canGenerateRandomOvni(game)) {
+			game.addObject(new Ovni(game));
+		}
+	}
+	
+	/**
+	 * Return count of ovnis that are alive
+	 * @return Count of alive ovnis
+	 */
+	public static int getOvniCount() {
+		return ovniCount;
 	}
 }

@@ -1,7 +1,7 @@
 package tp.p1.input;
 
 import tp.p1.game.Controller;
-import tp.p1.game.Game;
+import tp.p1.game.IPlayerController;
 
 /**
  * Superpower command
@@ -22,9 +22,9 @@ public class SuperpowerCommand extends NoParamsCommand {
 	 * @throws CommandExecuteException 
 	 */
 	@Override
-	public boolean execute(Game game, Controller controller) throws CommandExecuteException {
+	public boolean execute(IPlayerController playerController, Controller controller) throws CommandExecuteException {
 		
-		if(game.useSuperPower()) {
+		if(playerController.shockWave()) {
 			return true;
 		} else {
 			throw new CommandExecuteException("No shock wave available");

@@ -26,7 +26,7 @@ public abstract class Weapon extends GameObject {
 		this.harm = harm;
 	}
 	
-	public abstract boolean update();
+	public abstract void update();
 	
 	/**
 	 * Get harm

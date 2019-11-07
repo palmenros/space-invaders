@@ -1,7 +1,7 @@
 package tp.p1.input;
 
 import tp.p1.game.Controller;
-import tp.p1.game.Game;
+import tp.p1.game.IPlayerController;
 
 /**
  * Shoot command
@@ -22,8 +22,8 @@ public class ShootCommand extends NoParamsCommand {
 	 * @throws CommandExecuteException 
 	 */
 	@Override
-	public boolean execute(Game game, Controller controller) throws CommandExecuteException {
-		if(game.shoot()) {
+	public boolean execute(IPlayerController playerController, Controller controller) throws CommandExecuteException {
+		if(playerController.shootMissile()) {
 			return true;
 		} else {
 			throw new CommandExecuteException("Cannot shoot");

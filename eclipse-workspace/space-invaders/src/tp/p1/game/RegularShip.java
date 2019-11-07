@@ -7,6 +7,11 @@ package tp.p1.game;
 public class RegularShip extends AlienShip {
 	
 	/**
+	 * Count of regular ships
+	 */
+	private static int regularCount = 0;
+	
+	/**
 	 * Default health
 	 */
 	private static final int HEALTH = 2;
@@ -24,6 +29,7 @@ public class RegularShip extends AlienShip {
 	public RegularShip(Game game, int r, int c)
 	{
 		super(game, r, c, HEALTH, SCORE);
+		regularCount++;
 	}
 	
 	/**
@@ -46,11 +52,27 @@ public class RegularShip extends AlienShip {
 	/**
 	 * Update ship
 	 */
-	public boolean update()
+	public void update()
 	{
-		//Will be always alive until killed by missile
-		//Movement is handled by Game
-		return true;
+		//Call parent update
+		super.update();
+	}
+	
+	
+	/**
+	 * Delete object
+	 */
+	public void destroy() {
+		regularCount--;
+		super.destroy();
+	}
+	
+	/**
+	 * Return count of regular ships that are still alive
+	 * @return count of alive regular ships
+	 */
+	public static int getRegularShipCount() {
+		return regularCount;
 	}
 	
 }

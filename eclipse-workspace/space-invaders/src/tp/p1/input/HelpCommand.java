@@ -1,7 +1,7 @@
 package tp.p1.input;
 
 import tp.p1.game.Controller;
-import tp.p1.game.Game;
+import tp.p1.game.IPlayerController;
 
 /**
  * Help command
@@ -21,7 +21,7 @@ public class HelpCommand extends NoParamsCommand {
 	 * Execute help command
 	 */
 	@Override
-	public boolean execute(Game game, Controller controller) {
+	public boolean execute(IPlayerController playerController, Controller controller) {
 		controller.displayCommandHelp(CommandGenerator.commandHelp());
 		return false;
 	}
