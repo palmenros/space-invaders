@@ -84,10 +84,33 @@ public class Ovni extends EnemyShip implements IExecuteRandomActions {
 	@Override
 	public void destroy() {
 		ovniCount--;
-		game.enableShockWave();
 		super.destroy();
 	}
+	
+	@Override
+	public boolean receiveMissileAttack(int damage) {
+		boolean result = super.receiveMissileAttack(damage);
+		
+		//If hit by a missile and killed, enable ShockWave
+		if(result && !isAlive()) {
+			game.enableShockWave();
+		}
+		
+		return result;
+	}
 
+	@Override
+	public boolean receiveShockWaveAttack(int damage) {
+		boolean result = super.receiveShockWaveAttack(damage);
+		
+		//If hit by ShockWave and killed, enable ShockWave
+		if(result && !isAlive()) {
+			game.enableShockWave();
+		}
+		
+		return result;
+	}
+	
 	/**
 	 * Static computer action for Ovni
 	 * @param game Game

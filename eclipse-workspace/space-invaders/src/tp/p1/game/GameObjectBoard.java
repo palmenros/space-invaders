@@ -86,8 +86,23 @@ public class GameObjectBoard {
 		
 		for(int i = 0; i < num; i++) {
 			arr[i].update();
+			checkAttacks(arr[i]);
 		}	
 		removeDead();
+	}
+	
+	
+	/**
+	 * Check attacks that a given object performs
+	 * @param object Object that will perform the attack
+	 */
+	private void checkAttacks(GameObject object)
+	{
+		for(int i = 0; i < num; i++) {	
+			if(arr[i] != object && arr[i].isAlive()) {
+				object.performAttack(arr[i]);
+			}
+		}
 	}
 	
 	/**
@@ -113,7 +128,7 @@ public class GameObjectBoard {
 	 * @param c Column
 	 * @return GameObject if found, null otherwise
 	 */
-	public GameObject getAt(int r, int c) {
+	private GameObject getAt(int r, int c) {
 		for(int i = 0; i < num; i++) {
 			GameObject object = arr[i];
 			if(object.isAt(r, c)) {
@@ -136,6 +151,13 @@ public class GameObjectBoard {
 			return obj.toString();
 		} else {
 			return "";
+		}
+	}
+	
+	public void reset()
+	{
+		for(int i = 0; i < num; i++) {
+			arr[i].destroy();
 		}
 	}
 }

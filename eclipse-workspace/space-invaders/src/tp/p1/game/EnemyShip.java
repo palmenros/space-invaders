@@ -71,8 +71,18 @@ abstract public class EnemyShip extends Ship {
 	 */
 	@Override
 	public boolean receiveShockWaveAttack(int dmg) {
-		damage(dmg);
+		damage(dmg);		
 		return true;
+	}
+	
+	@Override
+	public boolean damage(int dmg)
+	{
+		boolean result = super.damage(dmg);
+		if(! isAlive() ) {
+			game.receivePoints(score);			
+		}
+		return result;
 	}
 	
 	/**
@@ -80,7 +90,6 @@ abstract public class EnemyShip extends Ship {
 	 */
 	@Override
 	public void destroy() {
-		game.receivePoints(score);
 		super.destroy();
 	}
 	

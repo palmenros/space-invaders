@@ -7,6 +7,6 @@ public interface IExecuteRandomActions {
 	}
 	
 	static boolean canGenerateRandomBomb(Game game){
-		return game.getRandom().nextDouble() > game.getLevel().getFireRate();
+		return game.getRandom().nextDouble() < game.getLevel().getFireRate();
 	}
 }

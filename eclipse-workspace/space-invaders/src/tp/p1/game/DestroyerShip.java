@@ -4,7 +4,7 @@ package tp.p1.game;
  * Destroyer ship
  * @author Martín Gómez y Pedro Palacios 
  */
-public class DestroyerShip extends AlienShip {
+public class DestroyerShip extends AlienShip implements IExecuteRandomActions {
 
 	/**
 	 * Count of destroyer ships
@@ -61,19 +61,6 @@ public class DestroyerShip extends AlienShip {
 	}
 	
 	/**
-	 * Shoot a new bomb
-	 * @return null if cannot shoot, bomb created if could shoot
-	 */
-	public Bomb shoot()
-	{
-		if(!canShoot) {
-			return null;
-		}
-		canShoot = false;
-		return new Bomb(game, getRow(), getCol(), this);
-	}
-
-	/**
 	 * Reset value to be able to shoot again
 	 */
 	public void resetBomb()
@@ -90,9 +77,20 @@ public class DestroyerShip extends AlienShip {
 		return HARM;
 	}
 	
+	@Override
+	public void computerAction()
+	{
+		if(canShoot && IExecuteRandomActions.canGenerateRandomBomb(game))
+		{
+			canShoot = false;
+			game.addObject(new Bomb(game, getRow(), getCol(), this));
+		}
+	}
+	
 	/**
 	 * Update destroyer ship
 	 */
+	@Override
 	public void update()
 	{
 		//Call parent update

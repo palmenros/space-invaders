@@ -45,15 +45,21 @@ public class Bomb extends Weapon {
 	/**
 	 * Update bomb
 	 */
+	@Override
 	public void update()
+	{		
+		move(1,0);	
+	}
+	
+	@Override
+	public boolean performAttack(GameObject other)
 	{
-		
-		GameObject object = game.getAt(getRow() + 1, getCol());
-		if(object != null && object.receiveBombAttack(getHarm())) {
+		boolean result = isAt(other) && other.receiveBombAttack(getHarm());
+		if(result) {
 			kill();
 		}
-	
-		move(1,0);	
+		
+		return result;
 	}
 		
 	/**

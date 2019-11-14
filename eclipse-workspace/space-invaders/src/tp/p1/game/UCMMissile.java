@@ -52,6 +52,17 @@ public class UCMMissile extends Weapon {
 		move(-1,0);
 	}
 	
+	@Override
+	public boolean performAttack(GameObject other)
+	{
+		boolean result = isAt(other) && other.receiveMissileAttack(getHarm());
+		if(result) {
+			kill();
+		}
+		
+		return result;
+	}
+	
 	/**
 	 *	Receive bomb attack
 	 *  @param dmg Damage to receive

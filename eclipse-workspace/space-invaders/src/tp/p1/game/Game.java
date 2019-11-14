@@ -60,18 +60,7 @@ public class Game implements IPlayerController {
 	 * Board initializer
 	 */
 	private BoardInitializer initializer;
-	
-	/**
-	 * Number of cycles since last joined alien move
-	 */
-	//private int cyclesSinceLastMove;
-			
-	/**
-	 *  Direction where the aliens are moving
-	 */
-	//private Direction alienDirection;
 		
-	
 	/**
 	 * Create new game with given level and seed
 	 * @param level	Level
@@ -94,10 +83,7 @@ public class Game implements IPlayerController {
 		//Initialize variables
 		score = 0;
 		cycleCount = 0;
-		
-		//cyclesSinceLastMove = Integer.MAX_VALUE;	
-		//alienDirection = Direction.LEFT;
-		
+			
 		ucmShip = new UcmShip(this);
 		superPower = null;	
 		board = initializer.initialize(this);
@@ -133,7 +119,6 @@ public class Game implements IPlayerController {
 		board.update();
 		cycleCount++;
 	}
-	
 	
 	/**
 	 * Return string of object at position
@@ -172,6 +157,8 @@ public class Game implements IPlayerController {
 	 */
 	public void reset()
 	{
+		board.reset();
+		AlienShip.reset();
 		initGame();
 	}
 	
@@ -216,52 +203,7 @@ public class Game implements IPlayerController {
 	{
 		return ucmShip.shoot();
 	}
-	
-	
-	/**
-	 * Move aliens down if touching border
-	 * @return True if moved aliens down
-	 */
-	//private boolean moveAliensDown() 
-	//{
-	//	boolean isAlienAtBorder = regularList.isAnyAtColumnBorder(alienDirection) 
-	//								|| destroyerList.isAnyAtColumnBorder(alienDirection);
 		
-	//	if(isAlienAtBorder)
-	//	{			
-	//		regularList.moveAll(1, 0);
-	//		destroyerList.moveAll(1, 0);
-			
-	//		alienDirection = alienDirection.getOppositeDirection();
-	//	}
-		
-	//	return isAlienAtBorder;
-	//}
-	
-	/**
-	 * Move aliens horizontally according to direction
-	 */
-	//private void moveAliensHorizontally() 
-	//{
-	//	regularList.moveAll(0, alienDirection.getDeltaCol());
-	//	destroyerList.moveAll(0, alienDirection.getDeltaCol());
-	//}
-
-	/**
-	 * Move aliens
-	 */
-	//private void moveAliens() 
-	//{
-	//	if(moveAliensDown()) {
-	//		cyclesSinceLastMove = 0;
-	//	} else {
-	//		if(cyclesSinceLastMove >= level.getSpeed()) {
-	//			moveAliensHorizontally();
-	//			cyclesSinceLastMove = 0;
-	//		}
-	//	}
-	//}
-	
 	/**
 	 * Get Game State
 	 * @return game state
@@ -322,7 +264,7 @@ public class Game implements IPlayerController {
 	 */
 	public void addObject(GameObject object)
 	{
-		//TODO: Implement
+		board.add(object);
 	}	
 	
 	/**
@@ -350,12 +292,7 @@ public class Game implements IPlayerController {
 	{
 		return level;
 	}
-	
-	public GameObject getAt(int row, int col) 
-	{
-		return board.getAt(row, col);
-	}
-	
+		
 	private int getRemainingAliens() {
 		return DestroyerShip.getDestroyerShipCount() + RegularShip.getRegularShipCount() + Ovni.getOvniCount();
 	}

@@ -60,7 +60,6 @@ public abstract class GameObject implements IAttack {
 		return r;
 	}
 
-	
 	/**
 	 * Set row
 	 * @param r Row
@@ -94,8 +93,18 @@ public abstract class GameObject implements IAttack {
 	public boolean isAt(int r, int c)
 	{
 		return getCol() == c && getRow() == r;
-	}	
+	}
 	
+	/**
+	 * Is object at the same position of other object
+	 * @param object Object to compare with
+	 * @return True if object is at given position, false otherwise
+	 */
+	public boolean isAt(GameObject object)
+	{
+		return getCol() == object.getCol() && getRow() == object.getRow();
+	}
+		
 	/**
 	 * Tries to move the object
 	 * @param dr Delta of row to move
