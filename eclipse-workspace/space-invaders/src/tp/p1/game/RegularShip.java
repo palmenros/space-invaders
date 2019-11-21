@@ -14,12 +14,12 @@ public class RegularShip extends AlienShip {
 	/**
 	 * Default health
 	 */
-	private static final int HEALTH = 2;
+	protected static final int HEALTH = 2;
 	
 	/**
 	 * Default score
 	 */
-	private static final int SCORE = 5;
+	protected static final int SCORE = 5;
 	
 	/**
 	 * Create regular ship at location
@@ -28,7 +28,12 @@ public class RegularShip extends AlienShip {
 	 */
 	public RegularShip(Game game, int r, int c)
 	{
-		super(game, r, c, HEALTH, SCORE);
+		this(game, r, c, HEALTH, SCORE);
+	}
+	
+	protected RegularShip(Game game, int r, int c, int health, int score)
+	{
+		super(game, r, c, health, score);
 		regularCount++;
 	}
 	
@@ -48,17 +53,6 @@ public class RegularShip extends AlienShip {
 	{
 		return EnemyShip.constructHelpMessage("Regular ship", SCORE, HEALTH, 0);
 	}
-	
-	/**
-	 * Update ship
-	 */
-	public void update()
-	{
-		//Call parent update
-		super.update();
-	}
-	
-	
 	/**
 	 * Delete object
 	 */
@@ -73,6 +67,17 @@ public class RegularShip extends AlienShip {
 	 */
 	public static int getRegularShipCount() {
 		return regularCount;
+	}
+	
+	@Override
+	public void computerAction()
+	{
+		super.computerAction();
+		if (IExecuteRandomActions.shouldBecomeExplosiveShip(game))
+		{
+			game.addObject(new ExplosiveShip(game, getRow(), getCol(), getHealth(), getScore()));
+			kill();
+		}
 	}
 	
 }

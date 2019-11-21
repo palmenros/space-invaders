@@ -221,4 +221,9 @@ public abstract class GameObject implements IAttack {
 	{
 		health = 0;
 	}
+	
+	public boolean receiveAreaAttack(int dmg) {
+		damage(dmg);
+		return true;
+	}
 }

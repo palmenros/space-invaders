@@ -45,6 +45,10 @@ public enum Level {
 		return ufoRate;
 	}
 
+	public float getExplosiveConversionRate()
+	{
+		return explosiveConversionRate;
+	}
 	/**
 	 * Number of common ships
 	 */
@@ -70,6 +74,10 @@ public enum Level {
 	 */
 	private final float ufoRate;
 	
+	/*
+	 * Probability of a regular ship becoming an explosive ship
+	 */
+	private final static float explosiveConversionRate = 0.05f;
 	/**
 	 * @param commonShipNum Number of common ships
 	 * @param destroyerNum Number of destroyer ships

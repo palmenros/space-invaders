@@ -11,6 +11,8 @@ public class ShockWave extends Weapon {
 	 */
 	private static final int DEFAULT_HARM = 1;
 	
+	private boolean firstUpdate = true;
+	
 	/**
 	 * Constructor with default damage
 	 */
@@ -39,8 +41,28 @@ public class ShockWave extends Weapon {
 	@Override
 	public void update()
 	{
-		//Do nothing
+		if(firstUpdate) { 
+			firstUpdate = false;
+		} else { 
+			kill(); 
+		}
 	}
 	
+	@Override
+	public boolean performAttack(GameObject other)
+	{
+		return other.receiveShockWaveAttack(getHarm());
+	}
+	
+	@Override
+	public boolean receiveAreaAttack(int dmg)
+	{
+		return false;
+	}
 
+	@Override
+	public boolean receiveShockWaveAttack(int dmg) 
+	{
+		return false;
+	}
 }

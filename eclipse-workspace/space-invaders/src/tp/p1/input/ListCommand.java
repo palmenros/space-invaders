@@ -25,6 +25,7 @@ public class ListCommand extends NoParamsCommand {
 				RegularShip.getHelpMessage(),
 				DestroyerShip.getHelpMessage(),
 				Ovni.getHelpMessage(),
+				ExplosiveShip.getHelpMessage(),
 				UcmShip.getHelpMessage()
 		});
 		

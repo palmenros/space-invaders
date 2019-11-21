@@ -17,4 +17,6 @@ public interface IAttack {
 	default boolean receiveShockWaveAttack(int damage) {
 		return false;
 	}
+	
+	boolean receiveAreaAttack(int damage);
 }

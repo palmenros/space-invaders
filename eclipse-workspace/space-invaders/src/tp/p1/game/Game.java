@@ -1,5 +1,3 @@
-//TODO: On reset game reset static variables
-
 package tp.p1.game;
 
 import java.util.Random;
@@ -47,11 +45,6 @@ public class Game implements IPlayerController {
 	private UcmShip ucmShip;
 
 	/**
-	 * SuperPower
-	 */
-	private ShockWave superPower;
-
-	/**
 	 *  Game object board
 	 */
 	private GameObjectBoard board;
@@ -85,7 +78,6 @@ public class Game implements IPlayerController {
 		cycleCount = 0;
 			
 		ucmShip = new UcmShip(this);
-		superPower = null;	
 		board = initializer.initialize(this);
 		board.add(ucmShip);
 	}
@@ -145,7 +137,7 @@ public class Game implements IPlayerController {
 		int remainingAliens = getRemainingAliens();
 	
 		stringBuilder.append("Remaining aliens: " + remainingAliens + "\n");
-		stringBuilder.append("ShockWave: " + ( superPower == null ? "NO" : "YES" ) + "\n");
+		stringBuilder.append("ShockWave: " + ( ucmShip.hasShockWave() ? "YES" : "NO" ) + "\n");
 		
 		stringBuilder.append(gamePrinter.toString());
 		
@@ -169,30 +161,6 @@ public class Game implements IPlayerController {
 	public UcmShip getUcmShip()
 	{
 		return ucmShip;
-	}
-
-	/**
-	 * Try to use SuperPower
-	 * @return true if could use, false otherwise
-	 */
-	public boolean shockWave()
-	{
-		//TODO: Implement shockWave
-		
-		//if(superPower == null) { return false; }
-	
-		//int damage = superPower.getHarm();
-		//superPower.kill();;
-		
-		//if(ovni != null) {	
-		//	damageOvni(damage);
-		//}
-				
-		//receivePoints(destroyerList.damageAll(damage));
-		//receivePoints(regularList.damageAll(damage));
-		
-		
-		return true;
 	}
 	
 	/**
@@ -251,11 +219,20 @@ public class Game implements IPlayerController {
 	}
 	
 	/**
+	 * Try to use SuperPower
+	 * @return true if could use, false otherwise
+	 */
+	public boolean shockWave()
+	{
+		return ucmShip.useShockWave();
+	}	
+	
+	/**
 	 * Enables Shock Wave
 	 */
 	public void enableShockWave()
 	{
-		superPower = new ShockWave(this, 0, 0);	
+		ucmShip.enableShockWave();
 	}
 	
 	/**
@@ -294,6 +271,6 @@ public class Game implements IPlayerController {
 	}
 		
 	private int getRemainingAliens() {
-		return DestroyerShip.getDestroyerShipCount() + RegularShip.getRegularShipCount() + Ovni.getOvniCount();
+		return DestroyerShip.getDestroyerShipCount() + RegularShip.getRegularShipCount() + Ovni.getOvniCount() + ExplosiveShip.getExplosiveShipCount();
 	}
 }

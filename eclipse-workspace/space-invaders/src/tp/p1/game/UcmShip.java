@@ -25,6 +25,8 @@ public class UcmShip extends Ship {
 	 * Reference to missile
 	 */
 	private UCMMissile missile = null;
+		
+	private boolean shockWaveAvailable = false;
 	
 	/**
 	 * Construct new UCM ship at location
@@ -85,6 +87,24 @@ public class UcmShip extends Ship {
 		missile = new UCMMissile(game, getRow(), getCol());
 		game.addObject(missile);
 		
+		return true;
+	}
+	
+	public boolean hasShockWave() {
+		return shockWaveAvailable;
+	}
+	
+	public void enableShockWave() {
+		shockWaveAvailable = true;
+	}
+	
+	public boolean useShockWave() {
+		if(!hasShockWave()) {
+			return false;
+		}
+		
+		game.addObject(new ShockWave(game, -1, -1));
+		shockWaveAvailable = false;	
 		return true;
 	}
 	

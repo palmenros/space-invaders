@@ -99,7 +99,7 @@ public class GameObjectBoard {
 	private void checkAttacks(GameObject object)
 	{
 		for(int i = 0; i < num; i++) {	
-			if(arr[i] != object && arr[i].isAlive()) {
+			if(arr[i] != object && object.isAlive() && arr[i].isAlive()) {
 				object.performAttack(arr[i]);
 			}
 		}
