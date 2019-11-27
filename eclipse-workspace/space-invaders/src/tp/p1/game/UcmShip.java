@@ -28,6 +28,8 @@ public class UcmShip extends Ship {
 		
 	private boolean shockWaveAvailable = false;
 	
+	private int superMissileNum = 0;
+	
 	/**
 	 * Construct new UCM ship at location
 	 * @param r Row
@@ -78,13 +80,21 @@ public class UcmShip extends Ship {
 	
 	/**
 	 * Shoot a missile
+	 * @param superMissile 
 	 * @return true if succeeded, false otherwise
 	 */
-	public boolean shoot()
+	public boolean shoot(boolean superMissile)
 	{
 		if(missile != null) { return false; }
 		
-		missile = new UCMMissile(game, getRow(), getCol());
+		if(superMissile) {
+			if(superMissileNum <= 0) { return false; }
+			superMissileNum--;			
+			missile = new SuperMissile(game, getRow(), getCol());
+		} else {
+			missile = new UCMMissile(game, getRow(), getCol());
+		}
+		
 		game.addObject(missile);
 		
 		return true;
@@ -125,6 +135,14 @@ public class UcmShip extends Ship {
 	public boolean receiveBombAttack(int dmg) {
 		damage(dmg);
 		return true;
+	}
+
+	public void addSuperMissile() {
+		superMissileNum++;
+	}
+	
+	public int getSuperMissileNum() {
+		return superMissileNum;
 	}
 	
 }

@@ -30,7 +30,7 @@ public class MoveCommand extends Command {
 	public Command parse(String[] words) throws IncorrectArgumentNumberException, IncorrectArgumentFormatException
 	{	
 		//Check the name of the command
-		if( words.length < 1 || !words[0].equals(name) && !words[0].equals(shortcut)) {
+		if( words.length < 1 || !matchCommandName(words[0])) {
 			return null;
 		}
 		

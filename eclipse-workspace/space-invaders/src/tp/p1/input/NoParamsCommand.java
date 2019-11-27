@@ -19,12 +19,16 @@ public abstract class NoParamsCommand extends Command {
 		
 	public Command parse(String[] words) throws IncorrectArgumentNumberException, IncorrectArgumentFormatException
 	{
-		if(words.length != 1) {
+		if(words.length < 1) {
 			return null;
 		}
 		
 		if (!matchCommandName(words[0])) {
 			return null;
+		}
+		
+		if(words.length > 1) {
+			throw new IncorrectArgumentNumberException(1);
 		}
 		
 		return this;

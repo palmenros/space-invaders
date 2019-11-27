@@ -138,6 +138,7 @@ public class Game implements IPlayerController {
 	
 		stringBuilder.append("Remaining aliens: " + remainingAliens + "\n");
 		stringBuilder.append("ShockWave: " + ( ucmShip.hasShockWave() ? "YES" : "NO" ) + "\n");
+		stringBuilder.append("SuperMissiles: " + ucmShip.getSuperMissileNum() + "\n");		
 		
 		stringBuilder.append(gamePrinter.toString());
 		
@@ -167,9 +168,9 @@ public class Game implements IPlayerController {
 	 * Shoot a missile
 	 * @return true if succeeded, false oterwise
 	 */
-	public boolean shootMissile()
+	public boolean shootMissile(boolean superMissile)
 	{
-		return ucmShip.shoot();
+		return ucmShip.shoot(superMissile);
 	}
 		
 	/**
@@ -272,5 +273,14 @@ public class Game implements IPlayerController {
 		
 	private int getRemainingAliens() {
 		return DestroyerShip.getDestroyerShipCount() + RegularShip.getRegularShipCount() + Ovni.getOvniCount() + ExplosiveShip.getExplosiveShipCount();
+	}
+
+	@Override
+	public boolean buySuperMissile(int cost) {
+		if(cost > score) { return false; }
+		
+		score -= cost;
+		ucmShip.addSuperMissile();
+		return true;
 	}
 }
