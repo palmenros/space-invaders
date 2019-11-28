@@ -94,5 +94,9 @@ public enum Level {
 		this.ufoRate = ufoRate;
 	}
 
+	public String serialize() {
+		return String.format("L;%s", this.toString().toUpperCase());
+	}
+
 }
 

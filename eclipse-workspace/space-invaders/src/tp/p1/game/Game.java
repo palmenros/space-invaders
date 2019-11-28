@@ -1,7 +1,16 @@
 package tp.p1.game;
 
 import java.util.Random;
+
+import tp.p1.gameObjects.AlienShip;
+import tp.p1.gameObjects.DestroyerShip;
+import tp.p1.gameObjects.ExplosiveShip;
+import tp.p1.gameObjects.GameObject;
+import tp.p1.gameObjects.Ovni;
+import tp.p1.gameObjects.RegularShip;
+import tp.p1.gameObjects.UcmShip;
 import tp.p1.util.*;
+import tp.p1.view.FormattedPrinter;
 
 /**
  * Class that represents a game
@@ -33,11 +42,6 @@ public class Game implements IPlayerController {
 	 * Number of cycles since start of the game
 	 */
 	private int cycleCount;
-
-	/**
-	 *	User score 
-	 */
-	private int score;
 
 	/**
 	 * Player's ship
@@ -73,8 +77,6 @@ public class Game implements IPlayerController {
 	 */
 	public void initGame()
 	{
-		//Initialize variables
-		score = 0;
 		cycleCount = 0;
 			
 		ucmShip = new UcmShip(this);
@@ -121,28 +123,6 @@ public class Game implements IPlayerController {
 	public String characterAtToString(int r, int c)
 	{
 		return board.toString(r, c);
-	}
-	
-	/**
-	 *	Return string representation of this game
-	 */
-	public String toString()
-	{
-		GamePrinter gamePrinter = new GamePrinter(this, ROW_NUM, COL_NUM);
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("Life: " + ucmShip.getHealth() + "\n");
-		stringBuilder.append("Number of cycles: " + cycleCount + "\n");
-		stringBuilder.append("Points: " + score + "\n");
-		
-		int remainingAliens = getRemainingAliens();
-	
-		stringBuilder.append("Remaining aliens: " + remainingAliens + "\n");
-		stringBuilder.append("ShockWave: " + ( ucmShip.hasShockWave() ? "YES" : "NO" ) + "\n");
-		stringBuilder.append("SuperMissiles: " + ucmShip.getSuperMissileNum() + "\n");		
-		
-		stringBuilder.append(gamePrinter.toString());
-		
-		return stringBuilder.toString();
 	}
 	
 	/**
@@ -216,7 +196,7 @@ public class Game implements IPlayerController {
 	 */
 	public void receivePoints(int points)
 	{
-		score += points;
+		ucmShip.receiveScore(points);
 	}
 	
 	/**
@@ -271,16 +251,44 @@ public class Game implements IPlayerController {
 		return level;
 	}
 		
-	private int getRemainingAliens() {
+	public int getRemainingAliens() {
 		return DestroyerShip.getDestroyerShipCount() + RegularShip.getRegularShipCount() + Ovni.getOvniCount() + ExplosiveShip.getExplosiveShipCount();
 	}
 
 	@Override
 	public boolean buySuperMissile(int cost) {
-		if(cost > score) { return false; }
+		if(cost > ucmShip.getScore()) { return false; }
 		
-		score -= cost;
+		ucmShip.receiveScore(-cost);
 		ucmShip.addSuperMissile();
 		return true;
+	}
+
+	public int getPlayerHealth() {
+		return ucmShip.getHealth();
+	}
+
+	public int getCycleCount() {
+		return cycleCount;
+	}
+
+	public int getScore() {
+		return ucmShip.getScore();
+	}
+
+	public boolean hasShockWave() {
+		return ucmShip.hasShockWave();
+	}
+
+	public int getSuperMissileNum() {
+		return ucmShip.getSuperMissileNum();
+	}
+
+	public String serialize() {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append(String.format("G;%d\n", cycleCount));
+		stringBuilder.append(level.serialize() + "\n");
+		stringBuilder.append(board.serialize());
+		return stringBuilder.toString();
 	}
 }

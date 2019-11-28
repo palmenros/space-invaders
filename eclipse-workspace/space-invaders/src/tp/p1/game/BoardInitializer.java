@@ -1,5 +1,8 @@
 package tp.p1.game;
 
+import tp.p1.gameObjects.DestroyerShip;
+import tp.p1.gameObjects.RegularShip;
+
 public class BoardInitializer {
 	
 	/**

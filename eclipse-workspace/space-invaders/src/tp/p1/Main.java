@@ -1,6 +1,8 @@
 package tp.p1;
 
 import java.util.Scanner;
+
+import tp.p1.controller.Controller;
 import tp.p1.game.*;
 
 /**

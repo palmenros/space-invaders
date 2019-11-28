@@ -1,5 +1,7 @@
 package tp.p1.game;
 
+import tp.p1.gameObjects.GameObject;
+
 /**
  * GameObject board
  * @author Martín Gómez y Pedro Palacios
@@ -159,5 +161,18 @@ public class GameObjectBoard {
 		for(int i = 0; i < num; i++) {
 			arr[i].destroy();
 		}
+	}
+
+	public String serialize() {
+		StringBuilder stringBuilder = new StringBuilder();
+		
+		for(int i = 0; i < num; i++) {
+			String serialization = arr[i].serialize();
+			if(!serialization.equals("")) {
+				stringBuilder.append(serialization + "\n");				
+			}
+		}
+		
+		return stringBuilder.toString();
 	}
 }
