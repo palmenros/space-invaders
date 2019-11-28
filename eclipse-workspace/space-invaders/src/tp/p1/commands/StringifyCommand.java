@@ -16,7 +16,7 @@ public class StringifyCommand extends NoParamsCommand {
 	@Override
 	public boolean execute(IPlayerController playerController, Controller controller) throws CommandExecuteException {
 		
-		controller.displayText( PrinterGenerator.getPrinter(PrinterTypes.SERIALIZER, controller.getGame()).toString() );
+		controller.displayStringified();
 		return false;
 	}
 

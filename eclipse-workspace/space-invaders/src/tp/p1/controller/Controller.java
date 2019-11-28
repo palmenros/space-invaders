@@ -7,6 +7,7 @@ import tp.p1.commands.CommandGenerator;
 import tp.p1.exceptions.*;
 import tp.p1.game.Game;
 import tp.p1.game.GameState;
+import tp.p1.view.GamePrinter;
 import tp.p1.view.PrinterGenerator;
 import tp.p1.view.PrinterTypes;
 
@@ -42,7 +43,7 @@ public class Controller {
 	 */
 	private final String resetGameMessage = "Game Reset!";
 	
-	private PrinterTypes printerType = PrinterTypes.BOARDPRINTER;
+	private GamePrinter printer = PrinterTypes.BOARDPRINTER.getObject();
 	
 	/**
 	 * Given a game, create a controller to play it
@@ -53,6 +54,7 @@ public class Controller {
 	{
 		this.game = game;
 		in = scanner;
+		printer.setGame(game);
 	}
 	
 	/**
@@ -109,7 +111,7 @@ public class Controller {
 	 */
 	public void draw()
 	{		
-		System.out.println(PrinterGenerator.getPrinter(printerType, game));
+		System.out.println(printer);
 	}
 	
 	/**
@@ -152,7 +154,9 @@ public class Controller {
 		System.out.println(text);
 	}
 
-	public Game getGame() {
-		return game;
+	public void displayStringified() {
+		GamePrinter stringifiedPrinter = PrinterTypes.SERIALIZER.getObject();
+		stringifiedPrinter.setGame(game);
+		System.out.println(stringifiedPrinter);
 	}
 }

@@ -6,7 +6,7 @@ public abstract class GamePrinter {
 
 	protected Game game;
 	
-	void setGame(Game game) {
+	public void setGame(Game game) {
 		this.game = game;
 	}
 }

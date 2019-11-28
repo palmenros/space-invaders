@@ -12,13 +12,6 @@ public class PrinterGenerator {
 			PrinterTypes.SERIALIZER
 	};	
 	
-	/**
-	 * Tries to parse words array into a command
-	 * @param words Words to parse
-	 * @return Command if found one that parses, null otherwise
-	 * @throws IncorrectArgumentNumberException
-	 * @throws IncorrectArgumentFormatException
-	 */
 	public static GamePrinter getPrinter(PrinterTypes type, Game game) {
 		GamePrinter result = type.getObject();
 		result.setGame(game);
