@@ -55,6 +55,10 @@ public class Ovni extends EnemyShip implements IExecuteRandomActions {
 	}
 	
 	
+	public Ovni() {
+		this(null);
+	}
+
 	/**
 	 * Return help message
 	 * @return Help message

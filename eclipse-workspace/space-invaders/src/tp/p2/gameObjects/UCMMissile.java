@@ -39,6 +39,10 @@ public class UCMMissile extends Weapon {
 		super(game, r, c, harm, symbol);
 	}
 
+	public UCMMissile() {
+		this(null, 0, 0);
+	}
+
 	/**
 	 * Get string representation of missile
 	 */

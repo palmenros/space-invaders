@@ -33,6 +33,8 @@ public class DestroyerShip extends AlienShip implements IExecuteRandomActions {
 	 */
 	private boolean canShoot = true;
 	
+	private static int currentSerialNumber;
+	
 	private static final String SYMBOL = "D";
 	
 	/**
@@ -46,6 +48,10 @@ public class DestroyerShip extends AlienShip implements IExecuteRandomActions {
 		destroyerCount++;
 	}
 	
+	public DestroyerShip() {
+		this(null, 0, 0);
+	}
+
 	/**
 	 * Get help message of destroyer 
 	 * @return Help message
@@ -67,7 +73,7 @@ public class DestroyerShip extends AlienShip implements IExecuteRandomActions {
 	 * Get destroyer harm
 	 * @return Harm that destroyers inflict
 	 */
-	public int getHarm()
+	public static int getHarm()
 	{
 		return HARM;
 	}
@@ -107,4 +113,25 @@ public class DestroyerShip extends AlienShip implements IExecuteRandomActions {
 	public static int getDestroyerShipCount() {
 		return destroyerCount;
 	}
+
+	private void initialiseLabelling() {
+		currentSerialNumber = 1;
+	}
+
+	private String generateSerializingLabel() {
+		label = currentSerialNumber;
+		currentSerialNumber++;
+		return labelRefSeparator + label;
+	}
+	
+	@Override
+	public String serialize() {
+		if (!game.isSerializing()) {
+			game.setSerializing();
+			initialiseLabelling();
+		}
+		return super.serialize() + generateSerializingLabel();
+	}
+
+
 }

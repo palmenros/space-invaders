@@ -41,6 +41,10 @@ public class RegularShip extends AlienShip {
 		regularCount++;
 	}
 	
+	public RegularShip() {
+		this(null, 0, 0);
+	}
+
 	/**
 	 * Return string representation of regular ship
 	 */

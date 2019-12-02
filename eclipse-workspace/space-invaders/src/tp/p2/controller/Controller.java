@@ -1,5 +1,7 @@
 package tp.p2.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.Scanner;
 
 import tp.p2.commands.Command;
@@ -8,7 +10,6 @@ import tp.p2.exceptions.*;
 import tp.p2.game.Game;
 import tp.p2.game.GameState;
 import tp.p2.view.GamePrinter;
-import tp.p2.view.PrinterGenerator;
 import tp.p2.view.PrinterTypes;
 
 
@@ -154,9 +155,13 @@ public class Controller {
 		System.out.println(text);
 	}
 
-	public void displayStringified() {
+	public String getStringified() {
 		GamePrinter stringifiedPrinter = PrinterTypes.SERIALIZER.getObject();
 		stringifiedPrinter.setGame(game);
-		System.out.println(stringifiedPrinter);
+		return stringifiedPrinter.toString();
+	}
+
+	public void loadGame(BufferedReader stream) throws FileContentsException, IOException {
+		game.load(stream);
 	}
 }

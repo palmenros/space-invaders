@@ -47,4 +47,8 @@ public enum Direction {
 		
 		}
 	}
+
+	public static Direction parse(String string) {
+		return Direction.valueOf(string.toUpperCase());
+	}
 }

@@ -37,6 +37,11 @@ public class ShockWave extends Weapon {
 		super(game, r, c, harm, "");
 	}
 	
+	public ShockWave() {
+		this(null, 0, 0);
+	}
+
+
 	/**
 	 * The shockwave does not update, so this method will not be implemented
 	 */

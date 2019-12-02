@@ -22,6 +22,8 @@ public class CommandGenerator {
 			new StringifyCommand(),
 			new ResetCommand(), 
 			new HelpCommand(), 
+			new SaveCommand(),
+			new LoadCommand(),
 			new ExitCommand(), 
 			new NoneCommand()
 	};	

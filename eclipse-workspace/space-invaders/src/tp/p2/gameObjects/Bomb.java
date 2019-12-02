@@ -24,10 +24,14 @@ public class Bomb extends Weapon {
 	 */
 	public Bomb(Game game, int r, int c, DestroyerShip owner)
 	{
-		super(game, r, c, owner.getHarm(), SYMBOL);
+		super(game, r, c, DestroyerShip.getHarm(), SYMBOL);
 		this.owner = owner;
 	}
 	
+	public Bomb() {
+		this(null, 0, 0, null);
+	}
+
 	/**
 	 * String representation of the bomb
 	 */
@@ -74,5 +78,15 @@ public class Bomb extends Weapon {
 	public boolean receiveMissileAttack(int dmg) {
 		damage(dmg);
 		return true;
+	}
+	
+	// call to getLabel assumes owner already serialized (so label already generated)
+	public String generateSerialRef() {
+		return labelRefSeparator + owner.getLabel();
+	}
+
+	@Override
+	public String serialize() {
+		return super.serialize() + generateSerialRef();
 	}
 }

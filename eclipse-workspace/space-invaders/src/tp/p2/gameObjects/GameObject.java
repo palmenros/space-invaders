@@ -2,6 +2,7 @@ package tp.p2.gameObjects;
 
 import tp.p2.game.Direction;
 import tp.p2.game.Game;
+import tp.p2.input.FileContentsVerifier;
 
 /**
  * Abstract class that represents a game object on the board
@@ -29,8 +30,11 @@ public abstract class GameObject implements IAttack {
 	 */
 	private int health;
 
-	
 	private String symbol;
+
+	public static final String labelRefSeparator = " - ";
+
+	protected int label = 0;
 	
 	/**
 	 * Create new GameObject at position
@@ -147,10 +151,8 @@ public abstract class GameObject implements IAttack {
 	public boolean canMove(int dr, int dc)
 	{
 		int newR = r + dr, newC = c + dc; 
-		if ( newR < 0 || newR >= Game.ROW_NUM) { return false; }
-		if ( newC < 0 || newC >= Game.COL_NUM) { return false; }
-		
-		return true;
+	
+		return Game.isOutOfBounds(newR, newC);
 	}
 	
 	/**
@@ -159,10 +161,7 @@ public abstract class GameObject implements IAttack {
 	 */
 	public boolean isOutOfBounds()
 	{
-		if ( r < 0 || r >= Game.ROW_NUM) { return true; }
-		if ( c < 0 || c >= Game.COL_NUM) { return true; }
-		
-		return false;
+		return Game.isOutOfBounds(r, c);
 	}
 	
 	/**
@@ -256,5 +255,14 @@ public abstract class GameObject implements IAttack {
 	
 	protected String getSymbol() {
 		return symbol;
+	}
+	
+	public int getLabel() {
+		return label;
+	}
+	
+	GameObject parse(String string, Game game, FileContentsVerifier verifier) {
+		//TODO IMPLEMENT
+		return null;
 	}
 }

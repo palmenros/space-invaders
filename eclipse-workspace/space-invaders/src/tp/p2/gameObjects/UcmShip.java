@@ -63,6 +63,10 @@ public class UcmShip extends Ship {
 	}
 	
 	
+	public UcmShip() {
+		this(null);
+	}
+
 	/**
 	 * Get string representation of UCM Ship
 	 */

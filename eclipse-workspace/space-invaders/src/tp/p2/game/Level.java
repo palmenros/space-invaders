@@ -78,6 +78,7 @@ public enum Level {
 	 * Probability of a regular ship becoming an explosive ship
 	 */
 	private final static float explosiveConversionRate = 0.05f;
+	
 	/**
 	 * @param commonShipNum Number of common ships
 	 * @param destroyerNum Number of destroyer ships
@@ -96,6 +97,10 @@ public enum Level {
 
 	public String serialize() {
 		return String.format("L;%s", this.toString().toUpperCase());
+	}
+
+	public static Level parse(String string) {
+		return Level.valueOf(string.toUpperCase());
 	}
 
 }

@@ -1,4 +1,4 @@
-package tp.p2;
+package tp.p2.input;
 
 import tp.p2.game.Level;
 

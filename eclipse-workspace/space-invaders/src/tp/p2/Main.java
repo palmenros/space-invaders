@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import tp.p2.controller.Controller;
 import tp.p2.game.*;
+import tp.p2.input.ArgumentParser;
 
 /**
  * Main executable class

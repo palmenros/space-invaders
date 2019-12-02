@@ -1,18 +1,21 @@
 package tp.p2.game;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.Random;
 
+import tp.p2.exceptions.FileContentsException;
 import tp.p2.exceptions.GameActionException;
 import tp.p2.exceptions.OffWorldException;
 import tp.p2.gameObjects.AlienShip;
 import tp.p2.gameObjects.DestroyerShip;
 import tp.p2.gameObjects.ExplosiveShip;
 import tp.p2.gameObjects.GameObject;
+import tp.p2.gameObjects.GameObjectGenerator;
 import tp.p2.gameObjects.Ovni;
 import tp.p2.gameObjects.RegularShip;
 import tp.p2.gameObjects.UcmShip;
-import tp.p2.util.*;
-import tp.p2.view.FormattedPrinter;
+import tp.p2.input.FileContentsVerifier;
 
 /**
  * Class that represents a game
@@ -59,6 +62,10 @@ public class Game implements IPlayerController {
 	 * Board initializer
 	 */
 	private BoardInitializer initializer;
+	
+	private boolean serializing = false;
+
+	private boolean loading;
 		
 	/**
 	 * Create new game with given level and seed
@@ -279,12 +286,53 @@ public class Game implements IPlayerController {
 	public int getSuperMissileNum() {
 		return ucmShip.getSuperMissileNum();
 	}
+	
+	public void setSerializing() {
+		serializing = true;
+	}
+	
+	public boolean isSerializing() {
+		return serializing;
+	}
 
 	public String serialize() {
+		serializing = false;
+
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append(String.format("G;%d\n", cycleCount));
 		stringBuilder.append(level.serialize() + "\n");
 		stringBuilder.append(board.serialize());
 		return stringBuilder.toString();
+	}
+	
+	public void load(BufferedReader stream) throws FileContentsException, IOException {
+		
+		//Clean old state
+		board.reset();
+		AlienShip.reset();
+		
+		String line = stream.readLine().trim();
+		//TODO: Read game data
+		
+		line = stream.readLine().trim();
+		//TODO: Read level data
+		
+		loading = false;	
+		line = stream.readLine().trim();
+		while( line != null && !line.isEmpty() ) {
+			GameObject gameObject = GameObjectGenerator.parse(line, this, new FileContentsVerifier());
+			if (gameObject == null) {
+				throw new FileContentsException("Invalid file, unrecognized line prefix");
+			}
+			board.add(gameObject);
+			line = stream.readLine().trim();
+		}
+	}
+
+	public static boolean isOutOfBounds(int r, int c) {
+		if ( r < 0 || r >= Game.ROW_NUM) { return true; }
+		if ( c < 0 || c >= Game.COL_NUM) { return true; }
+
+		return false;
 	}
 }

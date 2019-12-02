@@ -36,6 +36,10 @@ public class ExplosiveShip extends AlienShip {
 		explosiveCount++;
 	}
 	
+	public ExplosiveShip() {
+		this(null, 0, 0, HEALTH, SCORE);
+	}
+
 	/**
 	 * Return help message
 	 * @return Help message

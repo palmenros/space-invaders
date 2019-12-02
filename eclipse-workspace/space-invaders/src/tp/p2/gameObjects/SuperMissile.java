@@ -12,6 +12,10 @@ public class SuperMissile extends UCMMissile {
 		super(game, r, c, SUPERMISSILE_HARM, SYMBOL);
 	}
 
+	public SuperMissile() {
+		this(null, 0, 0);
+	}
+
 	public String toString()
 	{
 		return "X";
