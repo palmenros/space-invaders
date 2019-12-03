@@ -2,7 +2,10 @@
 
 package tp.p2.gameObjects;
 
+import tp.p2.exceptions.FileContentsException;
+import tp.p2.game.Direction;
 import tp.p2.game.Game;
+import tp.p2.input.FileContentsVerifier;
 
 public class ExplosiveShip extends AlienShip {
 	
@@ -37,7 +40,9 @@ public class ExplosiveShip extends AlienShip {
 	}
 	
 	public ExplosiveShip() {
-		this(null, 0, 0, HEALTH, SCORE);
+		this(null, -1, -1, HEALTH, SCORE);
+		alienShipCount--;
+		explosiveCount--;
 	}
 
 	/**
@@ -94,5 +99,24 @@ public class ExplosiveShip extends AlienShip {
 	 */
 	public static int getExplosiveShipCount() {
 		return explosiveCount;
+	}
+	
+	@Override
+	public 	GameObject parse(String string, Game game, FileContentsVerifier verifier) throws FileContentsException, NumberFormatException {
+		if(super.parse(string, game, verifier) == null) { return null; }
+	
+		string = string.split(labelRefSeparator)[0];
+		if(!verifier.verifyAlienShipString(string, game, HEALTH)) { throw new FileContentsException("Invalid player serialization"); }
+		
+		//Load data
+		String[] words = string.split(verifier.getReadSeparator1());
+		
+		ExplosiveShip explosive = new ExplosiveShip(game, getRow(), getCol(), HEALTH, SCORE);
+		explosive.setHealth(Integer.parseInt(words[2]));
+		cyclesSinceLastMove = Integer.parseInt(words[3]);
+		alienDirection = Direction.parse(words[4]);
+		explosive.setLabel(label);
+		
+		return explosive;
 	}
 }

@@ -1,7 +1,9 @@
 package tp.p2.gameObjects;
 
+import tp.p2.exceptions.FileContentsException;
 import tp.p2.game.Game;
 import tp.p2.gameObjects.EnemyShip;
+import tp.p2.input.FileContentsVerifier;
 
 /**
  * Class that represents a UFO
@@ -56,7 +58,8 @@ public class Ovni extends EnemyShip implements IExecuteRandomActions {
 	
 	
 	public Ovni() {
-		this(null);
+		this(null, -1, -1);
+		ovniCount--;
 	}
 
 	/**
@@ -128,5 +131,18 @@ public class Ovni extends EnemyShip implements IExecuteRandomActions {
 	 */
 	public static int getOvniCount() {
 		return ovniCount;
+	}
+	
+	@Override
+	public 	GameObject parse(String string, Game game, FileContentsVerifier verifier) throws FileContentsException, NumberFormatException {
+		if(super.parse(string, game, verifier) == null) { return null; }
+		if(!verifier.verifyOvniString(string, game, HEALTH)) { throw new FileContentsException("Invalid player serialization"); }
+		
+		//Load data
+		
+		String[] words = string.split(verifier.getReadSeparator1());
+		Ovni ovni = new Ovni(game, getRow(), getCol());
+		ovni.setHealth(Integer.parseInt(words[2]));
+		return ovni;
 	}
 }

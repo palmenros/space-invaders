@@ -1,6 +1,8 @@
 package tp.p2.gameObjects;
 
+import tp.p2.exceptions.FileContentsException;
 import tp.p2.game.Game;
+import tp.p2.input.FileContentsVerifier;
 
 /**
  * Bomb
@@ -29,7 +31,7 @@ public class Bomb extends Weapon {
 	}
 	
 	public Bomb() {
-		this(null, 0, 0, null);
+		this(null, -1, -1, null);
 	}
 
 	/**
@@ -89,4 +91,14 @@ public class Bomb extends Weapon {
 	public String serialize() {
 		return super.serialize() + generateSerialRef();
 	}
+	
+	@Override
+	public GameObject parse(String string, Game game, FileContentsVerifier verifier) throws FileContentsException, NumberFormatException {
+		if(super.parse(string, game, verifier) == null) { return null; }
+		
+		//Load data
+		Bomb bomb = new Bomb(game, getRow(), getCol(), game.getBombOwner(label));
+		return bomb;
+	}
+	
 }

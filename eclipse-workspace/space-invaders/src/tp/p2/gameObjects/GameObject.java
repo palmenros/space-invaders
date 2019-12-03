@@ -1,5 +1,6 @@
 package tp.p2.gameObjects;
 
+import tp.p2.exceptions.FileContentsException;
 import tp.p2.game.Direction;
 import tp.p2.game.Game;
 import tp.p2.input.FileContentsVerifier;
@@ -152,7 +153,7 @@ public abstract class GameObject implements IAttack {
 	{
 		int newR = r + dr, newC = c + dc; 
 	
-		return Game.isOutOfBounds(newR, newC);
+		return !Game.isOutOfBounds(newR, newC);
 	}
 	
 	/**
@@ -224,6 +225,10 @@ public abstract class GameObject implements IAttack {
 		return health;
 	}
 	
+	public void setHealth(int newHealth) {
+		health = newHealth;
+	}
+	
 	/**
 	 * @return True if alive
 	 */
@@ -250,7 +255,7 @@ public abstract class GameObject implements IAttack {
 			return "";
 		}
 		
-		return String.format("%s;%d;%d", symbol, getCol(), getRow());
+		return String.format("%s;%d,%d", symbol, getCol(), getRow());
 	}
 	
 	protected String getSymbol() {
@@ -261,8 +266,36 @@ public abstract class GameObject implements IAttack {
 		return label;
 	}
 	
-	GameObject parse(String string, Game game, FileContentsVerifier verifier) {
-		//TODO IMPLEMENT
-		return null;
+	public boolean isOwner(int ref) {
+		return label == ref;
+	}
+	
+	GameObject parse(String string, Game game, FileContentsVerifier verifier) throws FileContentsException, NumberFormatException {
+		
+		//Handle labels
+		String[] arr = string.split(labelRefSeparator);
+		if(arr.length > 1) {
+			label = Integer.parseInt(arr[1]);
+			string = arr[0];
+		} else {
+			label = 0;
+		}
+		
+		String[] words = string.split(verifier.getReadSeparator1());
+		if(words[0].equals(symbol)) {	
+			this.game = game;
+			
+			//x = c = coords[0], y = r = coords[1]
+			String[] coords = words[1].split (verifier.getReadSeparator2());
+			c = Integer.parseInt(coords[0]);
+			r = Integer.parseInt(coords[1]);	
+			return this;
+		} else {
+			return null;
+		}
+	}
+	
+	protected void setLabel(int newLabel) {
+		label = newLabel;
 	}
 }

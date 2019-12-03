@@ -1,11 +1,13 @@
 package tp.p2.gameObjects;
 
+import tp.p2.exceptions.FileContentsException;
 import tp.p2.exceptions.GameActionException;
 import tp.p2.exceptions.MissileInFlightException;
 import tp.p2.exceptions.NoShockWaveException;
 import tp.p2.exceptions.NoSuperMissileException;
 import tp.p2.exceptions.NotEnoughScoreException;
 import tp.p2.game.Game;
+import tp.p2.input.FileContentsVerifier;
 
 /**
  * Class that represents the ship that the user controls
@@ -36,7 +38,7 @@ public class UcmShip extends Ship {
 	/**
 	 * Reference to missile
 	 */
-	private UCMMissile missile = null;
+	private boolean missileAvailable = true;
 		
 	private boolean shockWaveAvailable = false;
 	
@@ -65,6 +67,10 @@ public class UcmShip extends Ship {
 	
 	public UcmShip() {
 		this(null);
+	}
+	
+	public static String getPlayerSymbol() {
+		return SYMBOL;
 	}
 
 	/**
@@ -103,14 +109,17 @@ public class UcmShip extends Ship {
 	 */
 	public void shoot(boolean superMissile) throws GameActionException
 	{
-		if(missile != null) { throw new MissileInFlightException(); }
+		if(!missileAvailable) { throw new MissileInFlightException(); }
 		
+		UCMMissile missile;
 		if(superMissile) {
 			if(superMissileNum <= 0) { throw new NoSuperMissileException(); }
 			superMissileNum--;			
+			missileAvailable = false;
 			missile = new SuperMissile(game, getRow(), getCol());
 		} else {
 			missile = new UCMMissile(game, getRow(), getCol());
+			missileAvailable = false;
 		}
 		
 		game.addObject(missile);
@@ -139,7 +148,7 @@ public class UcmShip extends Ship {
 	 */
 	public void enableMissile()
 	{
-		missile = null;
+		missileAvailable = true;
 	}
 	
 	/**
@@ -160,7 +169,7 @@ public class UcmShip extends Ship {
 	
 	@Override
 	public String serialize() {
-		return super.serialize() + ";" + score + ";" + shockWaveAvailable + "," + getSuperMissileNum();
+		return super.serialize() + ";" + score + ";" + shockWaveAvailable + ";" + getSuperMissileNum();
 	}
 	
 	public void receiveScore(int score) {
@@ -180,4 +189,24 @@ public class UcmShip extends Ship {
 		superMissileNum++;
 	}
 	
+	@Override
+	public 	GameObject parse(String string, Game game, FileContentsVerifier verifier) throws FileContentsException, NumberFormatException {
+		if(super.parse(string, game, verifier) == null) { return null; }
+		if(!verifier.verifyPlayerString(string, game, HEALTH)) { throw new FileContentsException("Invalid player serialization"); }
+		
+		//Load data
+		
+		String[] words = string.split(verifier.getReadSeparator1());
+
+		setHealth(Integer.parseInt(words[2]));
+		score = Integer.parseInt(words[3]);
+		shockWaveAvailable = words[4].equals("true");
+		superMissileNum = Integer.parseInt(words[5]);
+		
+		return this;
+	}
+
+	public void disableMissile() {
+		missileAvailable = false;
+	}
 }

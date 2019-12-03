@@ -36,7 +36,7 @@ public class Game implements IPlayerController {
 	/**
 	 * Chosen level by the user
 	 */
-	private final Level level;
+	private Level level;
 	
 	/**
 	 * Random Number Generator
@@ -64,8 +64,6 @@ public class Game implements IPlayerController {
 	private BoardInitializer initializer;
 	
 	private boolean serializing = false;
-
-	private boolean loading;
 		
 	/**
 	 * Create new game with given level and seed
@@ -309,23 +307,44 @@ public class Game implements IPlayerController {
 		
 		//Clean old state
 		board.reset();
+		board = new GameObjectBoard();
 		AlienShip.reset();
 		
-		String line = stream.readLine().trim();
-		//TODO: Read game data
+		FileContentsVerifier verifier = new FileContentsVerifier();
 		
-		line = stream.readLine().trim();
-		//TODO: Read level data
+		String line = stream.readLine();
+		if(line == null || !verifier.verifyCycleString(line)) {
+			throw new FileContentsException("Invalid game serialization");			
+		}
+		cycleCount = Integer.parseInt(line.split(verifier.getReadSeparator1())[1]);
+	
+		line = stream.readLine();
+		if(line == null || !verifier.verifyLevelString(line)) {
+			throw new FileContentsException("Invalid level serialization");
+		}
+		level = Level.parse(line.split(verifier.getReadSeparator1())[1]);
 		
-		loading = false;	
-		line = stream.readLine().trim();
+		line = stream.readLine();
 		while( line != null && !line.isEmpty() ) {
-			GameObject gameObject = GameObjectGenerator.parse(line, this, new FileContentsVerifier());
+			GameObject gameObject = GameObjectGenerator.parse(line.trim(), this, verifier);
 			if (gameObject == null) {
 				throw new FileContentsException("Invalid file, unrecognized line prefix");
 			}
+			
+			//Detect if UCMShip and set reference
+			if(line.split(verifier.getReadSeparator1())[0].equals(UcmShip.getPlayerSymbol())) {
+				ucmShip = (UcmShip) gameObject;
+			}
+			
 			board.add(gameObject);
-			line = stream.readLine().trim();
+			line = stream.readLine();
+		}
+		
+		//Set UCMShip missile available state
+		if(verifier.isMissileOnLoadedBoard()) {
+			ucmShip.disableMissile();			
+		} else {
+			ucmShip.enableMissile();
 		}
 	}
 
@@ -334,5 +353,9 @@ public class Game implements IPlayerController {
 		if ( c < 0 || c >= Game.COL_NUM) { return true; }
 
 		return false;
+	}
+
+	public DestroyerShip getBombOwner(int ref) {
+		return (DestroyerShip) board.getLabelOwner(ref);  // ugly cast
 	}
 }

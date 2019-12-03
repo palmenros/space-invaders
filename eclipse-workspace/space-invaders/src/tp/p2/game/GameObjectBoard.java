@@ -90,6 +90,7 @@ public class GameObjectBoard {
 			arr[i].update();
 			checkAttacks(arr[i]);
 		}	
+		
 		removeDead();
 	}
 	
@@ -174,5 +175,14 @@ public class GameObjectBoard {
 		}
 		
 		return stringBuilder.toString();
+	}
+	
+	public GameObject getLabelOwner(int ref) {
+		for (int i=0; i < num; i++) {
+			if (arr[i].isOwner(ref)) {
+				return arr[i];
+			}
+		}
+		return null;
 	}
 }

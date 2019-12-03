@@ -1,6 +1,8 @@
 package tp.p2.gameObjects;
 
+import tp.p2.exceptions.FileContentsException;
 import tp.p2.game.Game;
+import tp.p2.input.FileContentsVerifier;
 
 /**
  * Class that represents a missile thrown by the UCM-Ship
@@ -40,7 +42,7 @@ public class UCMMissile extends Weapon {
 	}
 
 	public UCMMissile() {
-		this(null, 0, 0);
+		this(null, -1, -1);
 	}
 
 	/**
@@ -90,6 +92,20 @@ public class UCMMissile extends Weapon {
 	{
 		game.enableMissile();
 		super.destroy();
+	}
+	
+	@Override
+	public 	GameObject parse(String string, Game game, FileContentsVerifier verifier) throws FileContentsException, NumberFormatException {
+		if(super.parse(string, game, verifier) == null) { return null; }
+	
+		string = string.split(labelRefSeparator)[0];
+		if(!verifier.verifyWeaponString(string, game)) { throw new FileContentsException("Invalid player serialization"); }
+		
+		//Load data	
+		UCMMissile missile = new UCMMissile(game, getRow(), getCol());
+		missile.setLabel(label);
+		
+		return missile;
 	}
 		
 }

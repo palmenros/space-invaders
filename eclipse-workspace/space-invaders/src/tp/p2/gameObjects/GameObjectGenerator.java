@@ -12,13 +12,12 @@ public class GameObjectGenerator {
 		new RegularShip(),
 		new DestroyerShip(),
 		new ExplosiveShip(),
-		new ShockWave(),
 		new Bomb(),
 		new UCMMissile(),
 		new SuperMissile()
 	};
 	
-	public static GameObject parse(String stringFromFile, Game game, FileContentsVerifier verifier) throws FileContentsException {
+	public static GameObject parse(String stringFromFile, Game game, FileContentsVerifier verifier) throws FileContentsException, NumberFormatException {
 		GameObject gameObject = null;
 		for (GameObject go: availableGameObjects) {
 			gameObject = go.parse(stringFromFile, game, verifier);

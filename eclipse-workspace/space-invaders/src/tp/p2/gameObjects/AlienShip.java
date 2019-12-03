@@ -10,16 +10,16 @@ public abstract class AlienShip extends EnemyShip {
 	/**
 	 * Number of cycles since last joined alien move
 	 */
-	private static int cyclesSinceLastMove = Integer.MAX_VALUE;
+	protected static int cyclesSinceLastMove = Integer.MAX_VALUE;
 			
 	/**
 	 *  Direction where the aliens are moving
 	 */
-	private static Direction alienDirection = Direction.LEFT;
+	protected static Direction alienDirection = Direction.LEFT;
 	
 	private static boolean shouldMoveAliensDown = false;
 	
-	private static int alienShipCount = 0;
+	protected static int alienShipCount = 0;
 	private static int alienUpdatedCount = 0;
 	
 	

@@ -1,6 +1,8 @@
 package tp.p2.gameObjects;
 
+import tp.p2.exceptions.FileContentsException;
 import tp.p2.game.Game;
+import tp.p2.input.FileContentsVerifier;
 
 public class SuperMissile extends UCMMissile {
 
@@ -19,5 +21,19 @@ public class SuperMissile extends UCMMissile {
 	public String toString()
 	{
 		return "X";
+	}
+
+	@Override
+	public 	GameObject parse(String string, Game game, FileContentsVerifier verifier) throws FileContentsException, NumberFormatException {
+		if(super.parse(string, game, verifier) == null) { return null; }
+	
+		string = string.split(labelRefSeparator)[0];
+		if(!verifier.verifyWeaponString(string, game)) { throw new FileContentsException("Invalid player serialization"); }
+		
+		//Load data	
+		SuperMissile missile = new SuperMissile(game, getRow(), getCol());
+		missile.setLabel(label);
+		
+		return missile;
 	}
 }

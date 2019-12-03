@@ -1,6 +1,9 @@
 package tp.p2.gameObjects;
 
+import tp.p2.exceptions.FileContentsException;
+import tp.p2.game.Direction;
 import tp.p2.game.Game;
+import tp.p2.input.FileContentsVerifier;
 
 /**
  * Class that represents a common ship that cannot shoot
@@ -42,7 +45,9 @@ public class RegularShip extends AlienShip {
 	}
 	
 	public RegularShip() {
-		this(null, 0, 0);
+		this(null, -1, -1);
+		alienShipCount--;
+		regularCount--;
 	}
 
 	/**
@@ -86,6 +91,25 @@ public class RegularShip extends AlienShip {
 			game.addObject(new ExplosiveShip(game, getRow(), getCol(), getHealth(), getScore()));
 			kill();
 		}
+	}
+	
+	@Override
+	public 	GameObject parse(String string, Game game, FileContentsVerifier verifier) throws FileContentsException, NumberFormatException {
+		if(super.parse(string, game, verifier) == null) { return null; }
+	
+		string = string.split(labelRefSeparator)[0];
+		if(!verifier.verifyAlienShipString(string, game, HEALTH)) { throw new FileContentsException("Invalid player serialization"); }
+		
+		//Load data
+		String[] words = string.split(verifier.getReadSeparator1());
+		
+		RegularShip regular = new RegularShip(game, getRow(), getCol());
+		regular.setHealth(Integer.parseInt(words[2]));
+		cyclesSinceLastMove = Integer.parseInt(words[3]);
+		alienDirection = Direction.parse(words[4]);
+		regular.setLabel(label);
+		
+		return regular;
 	}
 	
 }
