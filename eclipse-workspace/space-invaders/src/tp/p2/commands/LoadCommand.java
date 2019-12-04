@@ -17,7 +17,7 @@ public class LoadCommand extends Command {
 	private String fileName;
 	
 	/**
-	 * Constructs the key and the command of move using the first letter as key
+	 * Constructs the key and the command of load using the third letter as key
 	 */
 	public LoadCommand() {
 		super("load", "a", "load [filename]", "Load game state from file.");
@@ -30,7 +30,7 @@ public class LoadCommand extends Command {
 		if( words.length < 1 || !words[0].equals(name) && !words[0].equals(shortcut)) {
 			return null;
 		}
-		
+		//It is required that the filename has no spaces
 		if(words.length != 2) {
 			throw new IncorrectArgumentNumberException(2);
 		}

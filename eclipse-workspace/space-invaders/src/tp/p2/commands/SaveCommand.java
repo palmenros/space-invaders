@@ -28,7 +28,7 @@ public class SaveCommand extends Command {
 		if( words.length < 1 || !words[0].equals(name) && !words[0].equals(shortcut)) {
 			return null;
 		}
-		
+		//It is required that the filename has no spaces
 		if(words.length != 2) {
 			throw new IncorrectArgumentNumberException(2);
 		}
