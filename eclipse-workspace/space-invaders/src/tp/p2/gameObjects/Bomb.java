@@ -92,13 +92,21 @@ public class Bomb extends Weapon {
 		return super.serialize() + generateSerialRef();
 	}
 	
+	private static Bomb createInstance(Game game, int r, int c, int label) {
+		DestroyerShip owner = game.getBombOwner(label);
+		if(owner == null) { throw new NullPointerException(); }
+		return new Bomb(game, r, c, owner);
+	}
+	
 	@Override
 	public GameObject parse(String string, Game game, FileContentsVerifier verifier) throws FileContentsException, NumberFormatException {
 		if(super.parse(string, game, verifier) == null) { return null; }
 		
-		//Load data
-		Bomb bomb = new Bomb(game, getRow(), getCol(), game.getBombOwner(label));
-		return bomb;
+		try {			
+			return createInstance(game, getRow(), getCol(), label);
+		} catch(NullPointerException e) {
+			throw new FileContentsException("Invalid bomb label");
+		}
 	}
 	
 }

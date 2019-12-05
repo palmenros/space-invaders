@@ -189,6 +189,15 @@ public class UcmShip extends Ship {
 		superMissileNum++;
 	}
 	
+	private static UcmShip createInstance(Game game, int r, int c, int health, int score, boolean shockWaveAvailable, int superMissileNum) {
+		UcmShip ship = new UcmShip(game, r, c);
+		ship.setHealth(health);
+		ship.score = score;
+		ship.shockWaveAvailable = shockWaveAvailable;
+		ship.superMissileNum = superMissileNum;	
+		return ship;
+	}
+	
 	@Override
 	public 	GameObject parse(String string, Game game, FileContentsVerifier verifier) throws FileContentsException, NumberFormatException {
 		if(super.parse(string, game, verifier) == null) { return null; }
@@ -198,12 +207,12 @@ public class UcmShip extends Ship {
 		
 		String[] words = string.split(verifier.getReadSeparator1());
 
-		setHealth(Integer.parseInt(words[2]));
-		score = Integer.parseInt(words[3]);
-		shockWaveAvailable = words[4].equals("true");
-		superMissileNum = Integer.parseInt(words[5]);
+		int health = Integer.parseInt(words[2]);
+		int score = Integer.parseInt(words[3]);
+		boolean shockWaveAvailable = words[4].equals("true");
+		int superMissileNum = Integer.parseInt(words[5]);
 		
-		return this;
+		return createInstance(game, getRow(), getCol(), health, score, shockWaveAvailable, superMissileNum);
 	}
 
 	public void disableMissile() {

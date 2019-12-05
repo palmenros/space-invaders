@@ -1,0 +1,13 @@
+- Space Invaders v2.0 -
+
+G;4
+L;EASY
+R;1,1;2;1;LEFT
+R;2,1;2;1;LEFT
+R;4,1;2;1;LEFT
+D;2,2;1;1;LEFT - 1
+D;3,2;1;1;LEFT - 2
+P;4,7;3;0;false;0
+O;5,0;1
+E;3,1;2;1;LEFT
+B;3,3 - 1

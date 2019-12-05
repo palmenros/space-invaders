@@ -271,27 +271,30 @@ public abstract class GameObject implements IAttack {
 	}
 	
 	GameObject parse(String string, Game game, FileContentsVerifier verifier) throws FileContentsException, NumberFormatException {
-		
-		//Handle labels
-		String[] arr = string.split(labelRefSeparator);
-		if(arr.length > 1) {
-			label = Integer.parseInt(arr[1]);
-			string = arr[0];
-		} else {
-			label = 0;
-		}
-		
-		String[] words = string.split(verifier.getReadSeparator1());
-		if(words[0].equals(symbol)) {	
-			this.game = game;
+		try {
+			//Handle labels
+			String[] arr = string.split(labelRefSeparator);
+			if(arr.length > 1) {
+				label = Integer.parseInt(arr[1]);
+				string = arr[0];
+			} else {
+				label = 0;
+			}
 			
-			//x = c = coords[0], y = r = coords[1]
-			String[] coords = words[1].split (verifier.getReadSeparator2());
-			c = Integer.parseInt(coords[0]);
-			r = Integer.parseInt(coords[1]);	
-			return this;
-		} else {
-			return null;
+			String[] words = string.split(verifier.getReadSeparator1());
+			if(words[0].equals(symbol)) {	
+				this.game = game;
+				
+				//x = c = coords[0], y = r = coords[1]
+				String[] coords = words[1].split (verifier.getReadSeparator2());
+				c = Integer.parseInt(coords[0]);
+				r = Integer.parseInt(coords[1]);	
+				return this;
+			} else {
+				return null;
+			}
+		} catch(ArrayIndexOutOfBoundsException e) {
+			throw new FileContentsException("Invalid object serialization");
 		}
 	}
 	

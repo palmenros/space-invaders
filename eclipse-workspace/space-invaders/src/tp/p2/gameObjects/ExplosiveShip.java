@@ -101,22 +101,25 @@ public class ExplosiveShip extends AlienShip {
 		return explosiveCount;
 	}
 	
+	private static ExplosiveShip createInstance(Game game, int r, int c, int health, int label) {
+		ExplosiveShip ship = new ExplosiveShip(game, r, c, health, SCORE);
+		ship.setLabel(label);	
+		return ship;
+	}
+	
 	@Override
 	public 	GameObject parse(String string, Game game, FileContentsVerifier verifier) throws FileContentsException, NumberFormatException {
 		if(super.parse(string, game, verifier) == null) { return null; }
 	
 		string = string.split(labelRefSeparator)[0];
-		if(!verifier.verifyAlienShipString(string, game, HEALTH)) { throw new FileContentsException("Invalid player serialization"); }
+		if(!verifier.verifyAlienShipString(string, game, HEALTH)) { throw new FileContentsException("Invalid explosive ship serialization"); }
 		
 		//Load data
 		String[] words = string.split(verifier.getReadSeparator1());
-		
-		ExplosiveShip explosive = new ExplosiveShip(game, getRow(), getCol(), HEALTH, SCORE);
-		explosive.setHealth(Integer.parseInt(words[2]));
+	
 		cyclesSinceLastMove = Integer.parseInt(words[3]);
 		alienDirection = Direction.parse(words[4]);
-		explosive.setLabel(label);
-		
-		return explosive;
+	
+		return createInstance(game, getRow(), getCol(), Integer.parseInt(words[2]), label);
 	}
 }

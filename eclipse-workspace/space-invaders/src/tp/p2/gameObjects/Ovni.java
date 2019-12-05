@@ -133,16 +133,20 @@ public class Ovni extends EnemyShip implements IExecuteRandomActions {
 		return ovniCount;
 	}
 	
+	private static Ovni createInstance(Game game, int r, int c, int health) {
+		Ovni ovni = new Ovni(game, r, c);
+		ovni.setHealth(health);
+		return ovni;
+	}
+	
 	@Override
 	public 	GameObject parse(String string, Game game, FileContentsVerifier verifier) throws FileContentsException, NumberFormatException {
 		if(super.parse(string, game, verifier) == null) { return null; }
-		if(!verifier.verifyOvniString(string, game, HEALTH)) { throw new FileContentsException("Invalid player serialization"); }
+		if(!verifier.verifyOvniString(string, game, HEALTH)) { throw new FileContentsException("Invalid ovni serialization"); }
 		
 		//Load data
 		
 		String[] words = string.split(verifier.getReadSeparator1());
-		Ovni ovni = new Ovni(game, getRow(), getCol());
-		ovni.setHealth(Integer.parseInt(words[2]));
-		return ovni;
+		return createInstance(game, getRow(), getCol(), Integer.parseInt(words[2]));
 	}
 }

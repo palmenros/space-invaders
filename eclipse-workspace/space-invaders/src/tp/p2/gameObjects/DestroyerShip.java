@@ -144,22 +144,28 @@ public class DestroyerShip extends AlienShip implements IExecuteRandomActions {
 		return itsMe;
 	}
 
+	private static DestroyerShip createInstance(Game game, int r, int c, int health, int label) {
+		DestroyerShip ship = new DestroyerShip(game, r, c);
+		ship.setHealth(health);
+		ship.setLabel(label);	
+		return ship;
+	}
+	
 	@Override
 	public 	GameObject parse(String string, Game game, FileContentsVerifier verifier) throws FileContentsException, NumberFormatException {
 		if(super.parse(string, game, verifier) == null) { return null; }
 	
 		string = string.split(labelRefSeparator)[0];
-		if(!verifier.verifyAlienShipString(string, game, HEALTH)) { throw new FileContentsException("Invalid player serialization"); }
+		if(!verifier.verifyAlienShipString(string, game, HEALTH)) { throw new FileContentsException("Invalid destroyer ship serialization"); }
 		
 		//Load data
 		String[] words = string.split(verifier.getReadSeparator1());
-		
-		DestroyerShip destroyer = new DestroyerShip(game, getRow(), getCol());
-		destroyer.setHealth(Integer.parseInt(words[2]));
+			
+		//Load static data
 		cyclesSinceLastMove = Integer.parseInt(words[3]);
 		alienDirection = Direction.parse(words[4]);
-		destroyer.setLabel(label);
 		
-		return destroyer;
+		//Create ship
+		return createInstance(game, getRow(), getCol(), Integer.parseInt(words[2]), label);
 	}
 }

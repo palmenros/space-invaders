@@ -101,4 +101,13 @@ public abstract class AlienShip extends EnemyShip {
 	public String serialize() {
 		return super.serialize() + ";" + cyclesSinceLastMove + ";" + alienDirection.toString().toUpperCase();
 	}
+
+	public static AlienShipStatics saveStatics() {
+		return new AlienShipStatics(cyclesSinceLastMove, alienDirection);
+	}
+	
+	public static void restoreStatics(AlienShipStatics statics) {
+		cyclesSinceLastMove = statics.getCycles();
+		alienDirection = statics.getDirection();
+	}
 }

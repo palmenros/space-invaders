@@ -100,7 +100,11 @@ public enum Level {
 	}
 
 	public static Level parse(String string) {
-		return Level.valueOf(string.toUpperCase());
+		try {
+			return Level.valueOf(string.toUpperCase());
+		} catch(IllegalArgumentException e) {
+			return null;
+		}
 	}
 
 }

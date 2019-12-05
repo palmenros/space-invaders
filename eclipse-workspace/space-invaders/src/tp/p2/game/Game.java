@@ -8,6 +8,7 @@ import tp.p2.exceptions.FileContentsException;
 import tp.p2.exceptions.GameActionException;
 import tp.p2.exceptions.OffWorldException;
 import tp.p2.gameObjects.AlienShip;
+import tp.p2.gameObjects.AlienShipStatics;
 import tp.p2.gameObjects.DestroyerShip;
 import tp.p2.gameObjects.ExplosiveShip;
 import tp.p2.gameObjects.GameObject;
@@ -305,46 +306,71 @@ public class Game implements IPlayerController {
 	
 	public void load(BufferedReader stream) throws FileContentsException, IOException {
 		
-		//Clean old state
-		board.reset();
+		//Save old state in case loading fails
+		GameObjectBoard oldBoard = board;
+		Level oldLevel = level;
+		int oldCycleCount = cycleCount;
+		UcmShip oldShip = ucmShip;
+		AlienShipStatics oldStatics = AlienShip.saveStatics();
+		
+		//New board
 		board = new GameObjectBoard();
-		AlienShip.reset();
 		
-		FileContentsVerifier verifier = new FileContentsVerifier();
+		try {
 		
-		String line = stream.readLine();
-		if(line == null || !verifier.verifyCycleString(line)) {
-			throw new FileContentsException("Invalid game serialization");			
-		}
-		cycleCount = Integer.parseInt(line.split(verifier.getReadSeparator1())[1]);
-	
-		line = stream.readLine();
-		if(line == null || !verifier.verifyLevelString(line)) {
-			throw new FileContentsException("Invalid level serialization");
-		}
-		level = Level.parse(line.split(verifier.getReadSeparator1())[1]);
-		
-		line = stream.readLine();
-		while( line != null && !line.isEmpty() ) {
-			GameObject gameObject = GameObjectGenerator.parse(line.trim(), this, verifier);
-			if (gameObject == null) {
-				throw new FileContentsException("Invalid file, unrecognized line prefix");
-			}
+			FileContentsVerifier verifier = new FileContentsVerifier();
 			
-			//Detect if UCMShip and set reference
-			if(line.split(verifier.getReadSeparator1())[0].equals(UcmShip.getPlayerSymbol())) {
-				ucmShip = (UcmShip) gameObject;
+			String line = stream.readLine();
+			if(line == null || !verifier.verifyCycleString(line)) {
+				throw new FileContentsException("Invalid game serialization");			
 			}
-			
-			board.add(gameObject);
+			cycleCount = Integer.parseInt(line.split(verifier.getReadSeparator1())[1]);
+		
 			line = stream.readLine();
-		}
+			if(line == null || !verifier.verifyLevelString(line)) {
+				throw new FileContentsException("Invalid level serialization");
+			}
+			level = Level.parse(line.split(verifier.getReadSeparator1())[1]);
+			
+			line = stream.readLine();
+			while( line != null && !line.isEmpty() ) {
+				GameObject gameObject = GameObjectGenerator.parse(line.trim(), this, verifier);
+				if (gameObject == null) {
+					throw new FileContentsException("Invalid file, unrecognized line prefix");
+				}
+				
+				//Detect if UCMShip and set reference
+				if(line.split(verifier.getReadSeparator1())[0].equals(UcmShip.getPlayerSymbol())) {
+					ucmShip = (UcmShip) gameObject;
+				}
+				
+				board.add(gameObject);
+				line = stream.readLine();
+			}
+			
+			//Set UCMShip missile available state
+			if(verifier.isMissileOnLoadedBoard()) {
+				ucmShip.disableMissile();			
+			} else {
+				ucmShip.enableMissile();
+			}
+			
+			//Only if loaded successfully
+			oldBoard.reset();
+			AlienShip.reset();
+		} catch(FileContentsException | IOException e) {	
 		
-		//Set UCMShip missile available state
-		if(verifier.isMissileOnLoadedBoard()) {
-			ucmShip.disableMissile();			
-		} else {
-			ucmShip.enableMissile();
+			//Clean up failed board
+			board.reset();
+			
+			//Restore old game
+			board = oldBoard;
+			level = oldLevel;
+			cycleCount = oldCycleCount;
+			ucmShip = oldShip;
+			AlienShip.restoreStatics(oldStatics);
+			
+			throw e;
 		}
 	}
 
