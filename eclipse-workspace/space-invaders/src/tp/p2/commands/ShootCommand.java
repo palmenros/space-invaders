@@ -21,7 +21,7 @@ public class ShootCommand extends Command {
 		super("shoot", "s", "shoot <supermissile>", "UCM-Ship launches a missile.");
 	}
 	
-	boolean superMissile = false;
+	private boolean superMissile = false;
 	
 	public Command parse(String[] words) throws IncorrectArgumentNumberException, IncorrectArgumentFormatException
 	{
