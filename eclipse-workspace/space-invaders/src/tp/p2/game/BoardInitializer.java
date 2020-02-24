@@ -2,7 +2,7 @@ package tp.p2.game;
 
 import tp.p2.gameObjects.DestroyerShip;
 import tp.p2.gameObjects.RegularShip;
-
+import tp.p2.gameObjects.Wall;
 public class BoardInitializer {
 	
 	/**
@@ -48,6 +48,7 @@ public class BoardInitializer {
 		{
 			board.add(new DestroyerShip(game, INITIAL_COMMON_ALIENS_ROW + row, INITIAL_COMMON_ALIENS_COLUMN + columnOffset + i));
 		}
+		
 		
 		return board;
 	}

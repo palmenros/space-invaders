@@ -159,6 +159,13 @@ public class Game implements IPlayerController {
 	{
 		ucmShip.shoot(superMissile);
 	}
+	/**
+	 * Shoot a diagonal missile
+	 */
+	public void shootDiagonalMissile() throws GameActionException
+	{
+		ucmShip.shootDiagonal();
+	}
 		
 	/**
 	 * Get Game State

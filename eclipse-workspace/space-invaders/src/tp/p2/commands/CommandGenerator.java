@@ -15,6 +15,7 @@ public class CommandGenerator {
 	private static Command[] availableCommands = {
 			new MoveCommand(),
 			new ShootCommand(), 
+			new ShootDiagonalCommand(), 
 			new SuperpowerCommand(), 
 			new ListCommand(),
 			new ListPrintersCommand(),

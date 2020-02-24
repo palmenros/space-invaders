@@ -7,6 +7,7 @@ public interface IPlayerController {
 	// Player actions
 	public void move (int numCells) throws GameActionException;
 	public void shootMissile(boolean superMissile) throws GameActionException;
+	public void shootDiagonalMissile() throws GameActionException;
 	public void shockWave() throws GameActionException;
 	public void buySuperMissile(int cost) throws GameActionException;
 	

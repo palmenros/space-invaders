@@ -125,6 +125,22 @@ public class UcmShip extends Ship {
 		game.addObject(missile);
 		
 	}
+	/**
+	 * Shoot a diagonal missile
+	 */
+	public void shootDiagonal() throws GameActionException
+	{
+		if(!missileAvailable) { throw new MissileInFlightException(); }
+		
+		DiagonalMissile missile;
+		{
+			missile = new DiagonalMissile(game, getRow(), getCol());
+			missileAvailable = false;
+		}
+		
+		game.addObject(missile);
+		
+	}
 	
 	public boolean hasShockWave() {
 		return shockWaveAvailable;
